@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Virus Diagnostic Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .results {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .disclaimer {
+            margin-top: 20px;
+            font-style: italic;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>AI Virus Diagnostic Assistant</h1>
+        <p>Input your symptoms, duration, and severity to find possible viruses.</p>
+        
+        <input type="text" id="symptom-input" placeholder="Enter your symptoms (comma-separated)">
+        <input type="number" id="duration-input" placeholder="How many days have you had these symptoms?">
+        
+        <label for="severity-select">Severity of Symptoms:</label>
+        <select id="severity-select">
+            <option value="mild">Mild</option>
+            <option value="moderate">Moderate</option>
+            <option value="severe">Severe</option>
+        </select>
+        
+        <button onclick="searchViruses()">Search</button>
+
+        <div class="results" id="results-container" style="display:none;">
+            <h2>Possible Viruses</h2>
+            <div id="virus-results"></div>
+            <h3>Recommended Over-the-Counter Medications</h3>
+            <div id="medication-results"></div>
+        </div>
+
+        <div class="disclaimer">
+            I am an AI assistant; I might not be right 100 percent of the time. Please check with a medical provider before making any major decisions!
+        </div>
+    </div>
+
+    <script>
+        // Sample virus data
+        const virusData = {
+            "Flu": {
+                symptoms: ["fever", "cough", "sore throat", "fatigue"],
+                duration: { min: 1, max: 14 },
+                severity: "moderate",
+                medications: ["Tylenol", "Ibuprofen", "Cough Syrup"]
+            },
+            "COVID-19": {
+                symptoms: ["fever", "cough", "fatigue", "shortness of breath"],
+                duration: { min: 2, max: 14 },
+                severity: "severe",
+                medications: ["Tylenol", "Cough Syrup", "Zinc Supplements"]
+            },
+            "Common Cold": {
+                symptoms: ["cough", "sore throat", "runny nose", "fatigue"],
+                duration: { min: 1, max: 10 },
+                severity: "mild",
+                medications: ["Decongestants", "Tylenol", "Cough Syrup"]
+            },
+            "Dengue": {
+                symptoms: ["fever", "fatigue", "joint pain", "muscle pain"],
+                duration: { min: 3, max: 14 },
+                severity: "moderate",
+                medications: ["Tylenol", "Electrolyte Drinks"]
+            },
+            "Zika Virus": {
+                symptoms: ["fever", "rash", "joint pain"],
+                duration: { min: 2, max: 14 },
+                severity: "mild",
+                medications: ["Tylenol", "Rest"]
+            }
+        };
+
+        function searchViruses() {
+            const input = document.getElementById('symptom-input').value;
+            const duration = parseInt(document.getElementById('duration-input').value);
+            const severity = document.getElementById('severity-select').value;
+
+            const symptoms = input.split(',').map(symptom => symptom.trim().toLowerCase());
+            const resultsContainer = document.getElementById('virus-results');
+            const medicationResults = document.getElementById('medication-results');
+            resultsContainer.innerHTML = ''; // Clear previous results
+            medicationResults.innerHTML = ''; // Clear previous medications
+
+            for (const virus in virusData) {
+                const virusInfo = virusData[virus];
+                const matchedSymptoms = symptoms.filter(symptom => virusInfo.symptoms.includes(symptom));
+
+                if (matchedSymptoms.length > 0 && 
+                    duration >= virusInfo.duration.min && 
+                    duration <= virusInfo.duration.max &&
+                    (severity === virusInfo.severity || severity === "moderate" && virusInfo.severity === "mild")) {
+                    
+                    const virusDiv = document.createElement('div');
+                    virusDiv.innerHTML = `<strong>${virus}</strong><br>
+                                          Symptoms: ${virusInfo.symptoms.join(', ')}<br>
+                                          Duration: ${virusInfo.duration.min}-${virusInfo.duration.max} days<br>`;
+                    resultsContainer.appendChild(virusDiv);
+                    
+                    // Add medications
+                    const medicationDiv = document.createElement('div');
+                    medicationDiv.innerHTML = `<strong>Recommended Medications:</strong> ${virusInfo.medications.join(', ')}`;
+                    medicationResults.appendChild(medicationDiv);
+                }
+            }
+
+            const resultsDisplay = document.getElementById('results-container');
+            resultsDisplay.style.display = resultsContainer.innerHTML ? 'block' : 'none';
+        }
+    </script>
+
+</body>
+</html>
