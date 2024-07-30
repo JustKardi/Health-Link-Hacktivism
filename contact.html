@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Doctor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label, input, textarea {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        input, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <label for="to">To:</label>
+        <input type="text" id="to" name="to" readonly value="">
+        
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject">
+        
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="5"></textarea>
+        
+        <button type="submit">Send Message</button>
+    </form>
+
+    <script>
+        // Retrieve email from query string
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const email = urlParams.get('email');
+        
+        if (email) {
+            document.getElementById('to').value = email;
+        }
+    </script>
+</body>
+</html>
