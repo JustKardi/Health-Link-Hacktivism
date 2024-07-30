@@ -5,26 +5,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hospital Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: white;
+            background-color: #f4f4f4;
+            color: #333;
         }
         h1 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            color: #fff; /* Change text color for better contrast */
+            background-color: #007BFF; /* Header background color */
+            padding: 10px;
+            border-radius: 5px;
         }
         #map {
             height: 80vh; /* Adjust height as necessary */
             width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        a {
+            color: #007BFF; /* Link color */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
         }
     </style>
 </head>
 <body>
-    <h1>Hospital Location</h1>
-    <div id="map"></div>
+    <div class="container">
+        <h1>Hospital Location</h1>
+        <div id="map"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Your Company Name. All rights reserved. | <a href="#">Contact Us</a></p>
+    </footer>
 
     <script>
         // Get the hospital details from the URL
@@ -51,6 +87,9 @@
                         position: userLocation,
                         map: map,
                         title: 'You are here',
+                        icon: {
+                            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png" // Optional blue marker icon
+                        }
                     });
 
                     // Add a marker for the hospital
@@ -58,6 +97,9 @@
                         position: hospitalCoords,
                         map: map,
                         title: hospitalName,
+                        icon: {
+                            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png" // Optional red marker icon
+                        }
                     });
 
                     // Optional: Draw a route between user and hospital
@@ -76,6 +118,8 @@
                             console.error('Directions request failed due to ' + status);
                         }
                     });
+                }, () => {
+                    alert("Unable to retrieve your location.");
                 });
             } else {
                 alert("Geolocation is not supported by this browser.");
@@ -85,9 +129,8 @@
         // Function to get hospital coordinates based on the location string
         function getHospitalCoordinates(location) {
             // Replace this mock implementation with a real API call or a mapping solution
-            // For simplicity, using hardcoded coordinates for demonstration purposes
             const hospitalCoordinates = {
-                "123 Main St, Springfield, IL": { lat: 39.7817, lng: -89.6501 }, // Example coordinates
+                "123 Main St, Springfield, IL": { lat: 39.7817, lng: -89.6501 },
                 "456 Elm St, Springfield, IL": { lat: 39.7820, lng: -89.6533 },
                 "789 Maple St, Springfield, IL": { lat: 39.7830, lng: -89.6510 },
                 "101 Oak St, Springfield, IL": { lat: 39.7800, lng: -89.6505 },
