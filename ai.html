@@ -61,9 +61,98 @@
             font-style: italic;
             color: #888;
         }
+
+        header {
+            background-color: #007BFF; /* Primary color for navbar */
+            padding: 10px 20px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .menu-icon {
+            display: none; /* Hidden by default */
+            font-size: 2em; /* Icon size */
+            color: white; /* Icon color */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            color: white; /* Text color */
+            text-decoration: none; /* Remove underline */
+            padding: 5px 10px; /* Add padding for hover effect */
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+            border-radius: 5px; /* Rounded corners */
+        }
+
+        .nav-links a:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+            color: #f8f9fa; /* Light text on hover */
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .menu-icon {
+                display: block; /* Show the menu icon on mobile */
+            }
+
+            .nav-links {
+                display: none; /* Hide the links by default */
+                flex-direction: column; /* Stack links vertically */
+                position: absolute; /* Position the dropdown */
+                top: 60px; /* Position below the navbar */
+                left: 0;
+                right: 0;
+                background-color: #007BFF; /* Background color for dropdown */
+                padding: 10px 0; /* Padding for dropdown */
+            }
+
+            .nav-links li {
+                margin: 10px 0; /* Margin for vertical spacing */
+                text-align: center; /* Center text */
+            }
+
+            #menu-toggle:checked + .menu-icon + .nav-links {
+                display: flex; /* Show the links when checkbox is checked */
+            }
+        }
     </style>
 </head>
 <body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Health Link</div>
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <label for="menu-toggle" class="menu-icon">&#9776;</label>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="signup.html">Sign Up</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <div class="container">
         <h1>AI Virus Diagnostic Assistant</h1>
@@ -118,13 +207,23 @@
                 symptoms: ["fever", "fatigue", "joint pain", "muscle pain"],
                 duration: { min: 3, max: 14 },
                 severity: "moderate",
-                medications: ["Tylenol", "Electrolyte Drinks"]
+                medications: ["Tylenol", "Electrolyte Drinks"],
+                doctors: [
+                    { name: "Dr. John Doe", email: "john.doe@example.com" },
+                    { name: "Dr. Jane Smith", email: "jane.smith@example.com" },
+                    { name: "Dr. Michael Brown", email: "michael.brown@example.com" }
+                ]
             },
             "Zika Virus": {
                 symptoms: ["fever", "rash", "joint pain"],
                 duration: { min: 2, max: 14 },
                 severity: "mild",
-                medications: ["Tylenol", "Rest"]
+                medications: ["Tylenol", "Rest"],
+                doctors: [
+                    { name: "Dr. Emily Johnson", email: "emily.johnson@example.com" },
+                    { name: "Dr. Robert Lee", email: "robert.lee@example.com" },
+                    { name: "Dr. Sarah Wilson", email: "sarah.wilson@example.com" }
+                ]
             }
         };
 
@@ -158,6 +257,16 @@
                     const medicationDiv = document.createElement('div');
                     medicationDiv.innerHTML = `<strong>Recommended Medications:</strong> ${virusInfo.medications.join(', ')}`;
                     medicationResults.appendChild(medicationDiv);
+
+                    // Check if doctors are available
+                    if (virusInfo.doctors && virusInfo.doctors.length > 0) {
+                        const doctorsDiv = document.createElement('div');
+                        doctorsDiv.innerHTML = `<strong>Recommended Doctors:</strong><br>`;
+                        virusInfo.doctors.forEach(doctor => {
+                            doctorsDiv.innerHTML += `<a href="contact.html?email=${encodeURIComponent(doctor.email)}">${doctor.name}</a><br>`;
+                        });
+                        resultsContainer.appendChild(doctorsDiv);
+                    }
                 }
             }
 
