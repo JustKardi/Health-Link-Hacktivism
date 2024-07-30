@@ -1,16 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hospital Wait Times</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* styles.css */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #007BFF; /* Primary color for heading */
+        }
+
+        .hospital-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer; /* Indicate clickable cards */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+            color: #343a40; /* Dark gray color for card title */
+        }
+
+        .card p {
+            margin: 5px 0;
+            font-size: 0.9em; /* Smaller font size for details */
+            color: #495057; /* Slightly lighter gray for text */
+        }
+
+        .card .wait-time {
+            font-weight: bold;
+            color: #d9534f; /* Red color for current wait time */
+        }
+
+        .card .drive-time {
+            color: #5bc0de; /* Light blue color for drive time */
+        }
+
+        .estimated-wait {
+            font-weight: bold;
+            color: #007BFF; /* Use primary color for estimated wait time */
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        a {
+            color: #007BFF; /* Link color */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Hospital Wait Times</h1>
         <div id="hospital-cards" class="hospital-cards"></div>
     </div>
-    <script src="script.js"></script>
+    <footer>
+        <p>&copy; 2024 Your Company Name. All rights reserved. | <a href="#">Contact Us</a></p>
+    </footer>
+    
+    <script>
+        // script.js
+
+        // Mock hospital data
+        const hospitals = [
+            {
+                name: "General Hospital",
+                location: "123 Main St, Springfield, IL",
+                waitTime: 30, // in minutes
+                driveTime: 10, // in minutes
+            },
+            {
+                name: "City Medical Center",
+                location: "456 Elm St, Springfield, IL",
+                waitTime: 45,
+                driveTime: 15,
+            },
+            {
+                name: "Town Health Clinic",
+                location: "789 Maple St, Springfield, IL",
+                waitTime: 20,
+                driveTime: 5,
+            },
+            {
+                name: "Regional Hospital",
+                location: "101 Oak St, Springfield, IL",
+                waitTime: 60,
+                driveTime: 25,
+            },
+        ];
+
+        // Function to calculate estimated wait time on arrival
+        function calculateEstimatedWaitTime(waitTime, driveTime) {
+            return waitTime + driveTime;
+        }
+
+        // Function to render hospital cards
+        function renderHospitalCards() {
+            const hospitalCardsContainer = document.getElementById('hospital-cards');
+            hospitalCardsContainer.innerHTML = '';
+
+            hospitals.forEach(hospital => {
+                const estimatedWaitTime = calculateEstimatedWaitTime(hospital.waitTime, hospital.driveTime);
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                // Add click event to navigate to the maps page
+                card.addEventListener('click', () => {
+                    window.location.href = `maps.html?name=${encodeURIComponent(hospital.name)}&location=${encodeURIComponent(hospital.location)}`;
+                });
+
+                card.innerHTML = `
+                    <h2>${hospital.name}</h2>
+                    <p><strong>Location:</strong> ${hospital.location}</p>
+                    <p class="wait-time">Current Wait Time: ${hospital.waitTime} min</p>
+                    <p class="drive-time">Drive Time: ${hospital.driveTime} min</p>
+                    <p><strong class="estimated-wait">Estimated Wait Time on Arrival:</strong> ${estimatedWaitTime} min</p>
+                `;
+
+                hospitalCardsContainer.appendChild(card);
+            });
+        }
+
+        // Initial render
+        renderHospitalCards();
+    </script>
 </body>
 </html>
