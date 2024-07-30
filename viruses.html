@@ -7,31 +7,45 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: white;
+            background-color: #ffffff; /* White background */
             color: #333;
             margin: 0;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center all items horizontally */
         }
 
         h1 {
             text-align: center;
+            font-size: 2.5em; /* Increased heading size */
+            margin-bottom: 20px; /* Space below the heading */
+            color: #007BFF; /* Blue color for the heading */
         }
 
         .dropdown-container {
             text-align: center;
             margin-bottom: 20px;
+            width: 100%; /* Full width to maintain centering */
         }
 
-        select {
+        input[type="text"], select {
             padding: 10px;
             font-size: 16px;
-            width: 200px;
+            width: 220px; /* Slightly wider input */
+            margin: 10px; /* Margin around the inputs */
+            border: 1px solid #007BFF; /* Blue border */
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2); /* Light shadow effect */
         }
 
         table {
             width: 100%;
+            max-width: 800px; /* Limit maximum width for better readability */
             border-collapse: collapse;
             margin-top: 20px;
+            background-color: #ffffff; /* White background for the table */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
         }
 
         th, td {
@@ -41,11 +55,27 @@
         }
 
         th {
-            background-color: #f2f2f2;
+            background-color: #007BFF; /* Blue background for headers */
+            color: white; /* White text for header */
         }
 
         tr:hover {
-            background-color: #f1f1f1;
+            background-color: #f1f1f1; /* Light gray on row hover */
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em; /* Smaller heading on small screens */
+            }
+
+            input[type="text"], select {
+                width: 90%; /* Responsive width */
+            }
+
+            table {
+                font-size: 14px; /* Smaller font size for table */
+            }
         }
     </style>
 </head>
@@ -173,12 +203,35 @@
             const dropdown = document.getElementById('city-dropdown');
             const options = dropdown.getElementsByTagName('option');
 
+            let matchFound = false; // Flag to check if a match is found
+
             for (let i = 0; i < options.length; i++) {
                 const option = options[i];
-                if (option.value.toLowerCase().indexOf(input) > -1) {
-                    option.style.display = '';
+                const optionValue = option.value.toLowerCase();
+                if (optionValue.indexOf(input) > -1) {
+                    option.style.display = ''; // Show the option
+                    matchFound = true; // A match has been found
                 } else {
-                    option.style.display = 'none';
+                    option.style.display = 'none'; // Hide the option
+                }
+            }
+
+            // Automatically select the first visible option if there's a match
+            if (matchFound) {
+                for (let i = 0; i < options.length; i++) {
+                    const option = options[i];
+                    if (option.style.display === '') {
+                        dropdown.value = option.value; // Set dropdown value to first matched option
+                        updateTable(); // Update the table based on the selected city
+                        break; // Stop once we find the first match
+                    }
+                }
+            } else {
+                dropdown.value = ""; // Reset dropdown if no matches
+                // Clear the table if no matches and input is valid
+                if (input.length > 0) {
+                    const tbody = document.getElementById('disease-table').getElementsByTagName('tbody')[0];
+                    tbody.innerHTML = ''; // Clear previous table data
                 }
             }
         }
