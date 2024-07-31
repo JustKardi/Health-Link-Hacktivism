@@ -50,9 +50,9 @@
     </style>
 </head>
 <body>
-    <form>
+    <form action="https://formspree.io/f/mkgwrjze" method="POST">
         <label for="to">To:</label>
-        <input type="text" id="to" name="to" readonly value="">
+        <input type="text" id="to" name="to" value="">
         
         <label for="subject">Subject:</label>
         <input type="text" id="subject" name="subject">
@@ -64,14 +64,41 @@
     </form>
 
     <script>
-        // Retrieve email from query string
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const email = urlParams.get('email');
-        
-        if (email) {
-            document.getElementById('to').value = email;
-        }
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Fetch the form values
+            const to = document.getElementById('to').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            // Submit the form data via fetch API
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    to: to,
+                    _subject: subject,
+                    message: message
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Successful submission
+                    window.location.href = 'success.html'; // Redirect to success page
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error if needed
+            });
+        });
     </script>
 </body>
 </html>
