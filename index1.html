@@ -1,188 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Link</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hospital Wait Times</title>
     <style>
+        /* styles.css */
         body {
-            font-family: Arial, sans-serif;
-            background-color: white;
-            color: #333;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
             margin: 0;
             padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             text-align: center;
+            margin-bottom: 30px;
+            color: #007BFF; /* Primary color for heading */
         }
 
-        .dropdown-container {
+        .hospital-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer; /* Indicate clickable cards */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+            color: #343a40; /* Dark gray color for card title */
+        }
+
+        .card p {
+            margin: 5px 0;
+            font-size: 0.9em; /* Smaller font size for details */
+            color: #495057; /* Slightly lighter gray for text */
+        }
+
+        .card .wait-time {
+            font-weight: bold;
+            color: #d9534f; /* Red color for current wait time */
+        }
+
+        .card .drive-time {
+            color: #5bc0de; /* Light blue color for drive time */
+        }
+
+        .estimated-wait {
+            font-weight: bold;
+            color: #007BFF; /* Use primary color for estimated wait time */
+        }
+
+        footer {
             text-align: center;
-            margin-bottom: 20px;
-        }
-
-        select {
-            padding: 10px;
-            font-size: 16px;
-            width: 200px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
             margin-top: 20px;
+            font-size: 0.9rem;
+            color: #777;
         }
 
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
+        a {
+            color: #007BFF; /* Link color */
+            text-decoration: none;
         }
 
-        th {
-            background-color: #f2f2f2;
-        }
-
-        tr:hover {
-            background-color: #f1f1f1;
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
         }
     </style>
 </head>
 <body>
-
-    <h1>Health Link</h1>
-
-    <div class="dropdown-container">
-        <label for="city-dropdown">Select a City:</label>
-        <input type="text" id="city-input" placeholder="Type a city name..." onkeyup="filterCities()">
-        <select id="city-dropdown" onchange="updateTable()">
-            <option value="">--Select a City--</option>
-            <option value="New York">New York</option>
-            <option value="Los Angeles">Los Angeles</option>
-            <option value="London">London</option>
-            <option value="Tokyo">Tokyo</option>
-            <option value="Sydney">Sydney</option>
-            <option value="Berlin">Berlin</option>
-            <option value="Mumbai">Mumbai</option>
-            <option value="Toronto">Toronto</option>
-            <option value="Paris">Paris</option>
-            <option value="Rio de Janeiro">Rio de Janeiro</option>
-        </select>
+    <div class="container">
+        <h1>Hospital Wait Times</h1>
+        <div id="hospital-cards" class="hospital-cards"></div>
     </div>
-
-    <table id="disease-table">
-        <thead>
-            <tr>
-                <th>Disease</th>
-                <th>Number of Cases</th>
-                <th>Symptoms</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Default data for New York -->
-            <tr class="New York">
-                <td>Flu</td>
-                <td>1500</td>
-                <td>Cough, Fever, Fatigue</td>
-            </tr>
-            <tr class="New York">
-                <td>COVID-19</td>
-                <td>3000</td>
-                <td>Fever, Cough, Shortness of Breath</td>
-            </tr>
-            <tr class="New York">
-                <td>Common Cold</td>
-                <td>2000</td>
-                <td>Sore Throat, Runny Nose, Cough</td>
-            </tr>
-        </tbody>
-    </table>
-
+    <footer>
+        <p>&copy; 2024 Your Company Name. All rights reserved. | <a href="#">Contact Us</a></p>
+    </footer>
+    
     <script>
-        const data = {
-            "New York": [
-                { disease: "Flu", cases: 1500, symptoms: "Cough, Fever, Fatigue" },
-                { disease: "COVID-19", cases: 3000, symptoms: "Fever, Cough, Shortness of Breath" },
-                { disease: "Common Cold", cases: 2000, symptoms: "Sore Throat, Runny Nose, Cough" }
-            ],
-            "Los Angeles": [
-                { disease: "Flu", cases: 1200, symptoms: "Cough, Fever, Fatigue" },
-                { disease: "COVID-19", cases: 2500, symptoms: "Fever, Cough, Shortness of Breath" },
-                { disease: "Pneumonia", cases: 800, symptoms: "Chest Pain, Cough, Fever" }
-            ],
-            "London": [
-                { disease: "Flu", cases: 1000, symptoms: "Cough, Fever, Fatigue" },
-                { disease: "COVID-19", cases: 4000, symptoms: "Fever, Cough, Shortness of Breath" },
-                { disease: "Asthma", cases: 900, symptoms: "Wheezing, Cough, Shortness of Breath" }
-            ],
-            "Tokyo": [
-                { disease: "Flu", cases: 1100, symptoms: "Cough, Fever, Fatigue" },
-                { disease: "COVID-19", cases: 3500, symptoms: "Fever, Cough, Shortness of Breath" },
-                { disease: "Allergy", cases: 1300, symptoms: "Sneezing, Itchy Eyes, Runny Nose" }
-            ],
-            "Sydney": [
-                { disease: "Flu", cases: 900, symptoms: "Cough, Fever, Fatigue" },
-                { disease: "COVID-19", cases: 2000, symptoms: "Fever, Cough, Shortness of Breath" },
-                { disease: "Skin Infection", cases: 600, symptoms: "Redness, Swelling, Pain" }
-            ],
-            "Berlin": [
-                { disease: "Flu", cases: 1300, symptoms: "Cough, Fever, Fatigue" },
-                { disease: "COVID-19", cases: 2700, symptoms: "Fever, Cough, Shortness of Breath" },
-                { disease: "Chronic Bronchitis", cases: 700, symptoms: "Cough, Mucus Production, Wheezing" }
-            ],
-            "Mumbai": [
-                { disease: "Flu", cases: 1600, symptoms: "Cough, Fever, Fatigue" },
-                { disease: "COVID-19", cases: 3900, symptoms: "Fever, Cough, Shortness of Breath" },
-                { disease: "Dengue", cases: 1200, symptoms: "High Fever, Severe Headaches, Joint Pain" }
-            ],
-            "Toronto": [
-                { disease: "Flu", cases: 800, symptoms: "Cough, Fever, Fatigue" },
-                { disease: "COVID-19", cases: 2200, symptoms: "Fever, Cough, Shortness of Breath" },
-                { disease: "Seasonal Allergy", cases: 500, symptoms: "Sneezing, Itchy Eyes, Runny Nose" }
-            ],
-            "Paris": [
-                { disease: "Flu", cases: 1400, symptoms: "Cough, Fever, Fatigue" },
-                { disease: "COVID-19", cases: 3300, symptoms: "Fever, Cough, Shortness of Breath" },
-                { disease: "Gastroenteritis", cases: 1100, symptoms: "Diarrhea, Vomiting, Abdominal Pain" }
-            ],
-            "Rio de Janeiro": [
-                { disease: "Flu", cases: 900, symptoms: "Cough, Fever, Fatigue" },
-                { disease: "COVID-19", cases: 3100, symptoms: "Fever, Cough, Shortness of Breath" },
-                { disease: "Zika Virus", cases: 400, symptoms: "Fever, Rash, Joint Pain" }
-            ]
-        };
+        // script.js
 
-        function updateTable() {
-            const city = document.getElementById('city-dropdown').value;
-            const tbody = document.getElementById('disease-table').getElementsByTagName('tbody')[0];
-            tbody.innerHTML = '';
+        // Mock hospital data
+        const hospitals = [
+            {
+                name: "General Hospital",
+                location: "123 Main St, Springfield, IL",
+                waitTime: 30, // in minutes
+                driveTime: 10, // in minutes
+            },
+            {
+                name: "City Medical Center",
+                location: "456 Elm St, Springfield, IL",
+                waitTime: 45,
+                driveTime: 15,
+            },
+            {
+                name: "Town Health Clinic",
+                location: "789 Maple St, Springfield, IL",
+                waitTime: 20,
+                driveTime: 5,
+            },
+            {
+                name: "Regional Hospital",
+                location: "101 Oak St, Springfield, IL",
+                waitTime: 60,
+                driveTime: 25,
+            },
+        ];
 
-            if (city && data[city]) {
-                data[city].forEach(item => {
-                    const row = tbody.insertRow();
-                    row.insertCell(0).innerText = item.disease;
-                    row.insertCell(1).innerText = item.cases;
-                    row.insertCell(2).innerText = item.symptoms;
+        // Function to calculate estimated wait time on arrival
+        function calculateEstimatedWaitTime(waitTime, driveTime) {
+            return waitTime + driveTime;
+        }
+
+        // Function to render hospital cards
+        function renderHospitalCards() {
+            const hospitalCardsContainer = document.getElementById('hospital-cards');
+            hospitalCardsContainer.innerHTML = '';
+
+            hospitals.forEach(hospital => {
+                const estimatedWaitTime = calculateEstimatedWaitTime(hospital.waitTime, hospital.driveTime);
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                // Add click event to navigate to the maps page
+                card.addEventListener('click', () => {
+                    window.location.href = `maps.html?name=${encodeURIComponent(hospital.name)}&location=${encodeURIComponent(hospital.location)}`;
                 });
-            }
+
+                card.innerHTML = `
+                    <h2>${hospital.name}</h2>
+                    <p><strong>Location:</strong> ${hospital.location}</p>
+                    <p class="wait-time">Current Wait Time: ${hospital.waitTime} min</p>
+                    <p class="drive-time">Drive Time: ${hospital.driveTime} min</p>
+                    <p><strong class="estimated-wait">Estimated Wait Time on Arrival:</strong> ${estimatedWaitTime} min</p>
+                `;
+
+                hospitalCardsContainer.appendChild(card);
+            });
         }
 
-        function filterCities() {
-            const input = document.getElementById('city-input').value.toLowerCase();
-            const dropdown = document.getElementById('city-dropdown');
-            const options = dropdown.getElementsByTagName('option');
-
-            for (let i = 0; i < options.length; i++) {
-                const option = options[i];
-                if (option.value.toLowerCase().indexOf(input) > -1) {
-                    option.style.display = '';
-                } else {
-                    option.style.display = 'none';
-                }
-            }
-        }
+        // Initial render
+        renderHospitalCards();
     </script>
-
 </body>
 </html>

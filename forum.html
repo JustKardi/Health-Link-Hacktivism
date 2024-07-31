@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Public Health Forum</title>
+    <style>
+      /* styles.css (embedded styles for the forum) */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center content horizontally */
+        min-height: 100vh; /* Full height */
+      }
+
+      header {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px; /* Reduced padding */
+        text-align: center;
+        width: 100%; /* Full width */
+        position: fixed; /* Fix to the top */
+        top: 0;
+        left: 0;
+        z-index: 1000; /* Ensure it stays on top */
+      }
+
+      h1 {
+        margin: 20px 0 0; /* Added margin to create space above */
+        font-size: 1.8em; /* Smaller font size for the header */
+      }
+
+      main {
+        max-width: 800px;
+        margin-top: 80px; /* Adjusted to avoid overlap with the header */
+        padding: 20px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center; /* Center text within main */
+        flex: 1; /* Allow main to grow and take available space */
+      }
+
+      input[type="text"],
+      textarea {
+        width: calc(100% - 20px);
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        resize: none; /* Prevent resizing for textarea */
+      }
+
+      textarea {
+        height: 150px; /* Increased height for the message box */
+      }
+
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #007bff; /* Darken button on hover */
+      }
+
+      #postsContainer {
+        margin-top: 20px;
+        text-align: left; /* Align text left within posts */
+      }
+
+      .post {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0;
+        word-wrap: break-word; /* Ensure text wraps to the next line */
+      }
+
+      .post h3 {
+        margin: 0 0 5px;
+        font-size: 1.2em;
+      }
+
+      .reply {
+        background-color: #e9f5e9; /* Keep the green reply color */
+        border: 1px solid #4caf50;
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .reply h4 {
+        margin: 0 0 5px;
+        font-size: 1.1em;
+      }
+
+      footer {
+        text-align: center;
+        padding: 10px 20px; /* Reduced padding */
+        background-color: #f1f1f1;
+        width: 100%;
+      }
+
+      /* Responsive design */
+      @media (max-width: 600px) {
+        header,
+        footer {
+          padding: 10px; /* Further reduce padding on smaller screens */
+        }
+
+        main {
+          padding: 15px; /* Adjust padding for main on smaller screens */
+        }
+
+        button {
+          padding: 8px 12px; /* Adjust button size on smaller screens */
+        }
+
+        textarea {
+          height: 120px; /* Adjust height for smaller screens */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Public Health Forum</h1>
+    </header>
+    <main>
+      <section>
+        <h2>Post a Message</h2>
+        <form id="postForm">
+          <input type="text" id="userName" placeholder="Your Name" required />
+          <textarea
+            id="userMessage"
+            placeholder="Your Message"
+            required
+          ></textarea>
+          <button type="submit">Post</button>
+          <input type="checkbox" id="subscribeCheckbox" />
+          <label for="subscribeCheckbox">Subscribe to replies</label>
+        </form>
+      </section>
+      <section>
+        <h2>Forum Posts</h2>
+        <div id="postsContainer"></div>
+      </section>
+    </main>
+    <footer>
+      <p>&copy; 2024 Public Health Dashboard</p>
+    </footer>
+    <script>
+      // forum.js (embedded functionality for the forum)
+
+      // Function to handle form submission
+      document
+        .getElementById("postForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent the default form submission
+
+          // Get user input
+          const userName = document.getElementById("userName").value;
+          const userMessage = document.getElementById("userMessage").value;
+          const subscribeChecked =
+            document.getElementById("subscribeCheckbox").checked;
+
+          // Create a new post element with timestamp
+          const timestamp = new Date().toLocaleString();
+          createPost(userName, userMessage, timestamp, subscribeChecked);
+
+          // Clear the input fields
+          document.getElementById("userName").value = "";
+          document.getElementById("userMessage").value = "";
+          document.getElementById("subscribeCheckbox").checked = false;
+        });
+
+      function createPost(userName, userMessage, timestamp, subscribeChecked) {
+        const postElement = document.createElement("div");
+        postElement.className = "post";
+        postElement.innerHTML = `
+                <h3>${userName}</h3>
+                <p>${userMessage}</p>
+                <p><small>Posted on ${timestamp}</small></p>
+                <button class="reply-btn">Reply</button>
+                <div class="reply-container" style="display: none;">
+                    <div class="reply-form">
+                        <textarea placeholder="Your Reply" required></textarea>
+                        <button class="submit-reply">Submit Reply</button>
+                    </div>
+                </div>
+                <div class="replies-container"></div>
+            `;
+
+        // Append the new post to the posts container
+        document.getElementById("postsContainer").appendChild(postElement);
+
+        // Add event listener for reply button
+        postElement
+          .querySelector(".reply-btn")
+          .addEventListener("click", function () {
+            const replyContainer =
+              postElement.querySelector(".reply-container");
+            replyContainer.style.display =
+              replyContainer.style.display === "none" ? "block" : "none";
+          });
+
+        // Add event listener for reply submission
+        postElement
+          .querySelector(".submit-reply")
+          .addEventListener("click", function () {
+            const replyText = postElement.querySelector(
+              ".reply-form textarea"
+            ).value;
+            if (replyText) {
+              const repliesContainer =
+                postElement.querySelector(".replies-container");
+              const replyElement = document.createElement("div");
+              replyElement.className = "reply";
+              replyElement.innerHTML = `
+                        <h4>${userName} replied:</h4>
+                        <p>${replyText}</p>
+                    `;
+              repliesContainer.appendChild(replyElement);
+              postElement.querySelector(".reply-form textarea").value = ""; // Clear the reply textarea
+            }
+          });
+
+        // Subscribe functionality
+        if (subscribeChecked) {
+          // Implement your subscription logic here (e.g., send notification, store in database)
+          console.log(`${userName} subscribed to replies.`);
+        }
+      }
+    </script>
+  </body>
+</html>

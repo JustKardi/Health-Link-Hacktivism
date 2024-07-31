@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Link - Sign Up</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa; /* Light gray background for contrast */
+            color: #333;
+            margin: 0;
+            padding: 40px; /* Increased padding for a spacious layout */
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: white; /* White background for the form */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Deeper shadow for more depth */
+        }
+
+        h1 {
+            text-align: center;
+            color: #007BFF; /* Primary color for the heading */
+            margin-bottom: 20px;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"], input[type="date"], select {
+            width: 100%;
+            padding: 12px; /* Increased padding for input fields */
+            margin: 10px 0;
+            border: 1px solid #007BFF; /* Primary color for input borders */
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensures padding is included in width */
+            transition: border-color 0.3s; /* Smooth transition for focus effect */
+        }
+
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, input[type="date"]:focus, select:focus {
+            border-color: #0056b3; /* Darker shade on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        button {
+            background-color: #007BFF; /* Primary button color */
+            color: white;
+            padding: 12px; /* Increased padding for the button */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px; /* Larger font for better readability */
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px; /* Smaller font size for footer */
+            color: #555; /* Lighter gray for footer text */
+        }
+
+        .checkbox {
+            margin: 10px 0;
+        }
+
+        .checkbox label {
+            font-size: 14px; /* Smaller font for checkbox label */
+        }
+
+        a {
+            color: #007BFF; /* Primary color for links */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline; /* Underline on hover for links */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Sign Up</h1>
+        <input type="text" id="full-name" placeholder="Full Name" required>
+        <input type="date" id="dob" required>
+        <input type="text" id="city" placeholder="City" required>
+        <input type="text" id="country" placeholder="Country" required>
+        <input type="email" id="signup-email" placeholder="Email" required>
+        <input type="text" id="signup-username" placeholder="Username" required>
+        <input type="password" id="signup-password" placeholder="Password" required>
+        
+        <select id="user-type" required>
+            <option value="">Select User Type</option>
+            <option value="healthcare_provider">I am a Healthcare Provider</option>
+            <option value="citizen">I am a Citizen</option>
+        </select>
+        
+        <div class="checkbox">
+            <input type="checkbox" id="terms" required>
+            <label for="terms">I agree to the <a href="termsandconditions.html">terms and conditions</a>.</label>
+        </div>
+
+        <button onclick="signup()">Sign Up</button>
+        <div class="footer">
+            <p>Already have an account? <a href="login.html">Login</a></p>
+        </div>
+    </div>
+
+    <script>
+        function signup() {
+            // Implement signup functionality here
+            alert("Signup functionality not implemented.");
+        }
+    </script>
+
+</body>
+</html>
