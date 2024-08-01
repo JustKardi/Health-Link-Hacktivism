@@ -2,15 +2,124 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/login.css">
+    <title>Health Link</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #D3D3D3;
+            color: #2C2C2C;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-top: 80px; /* Space for the fixed header */
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.6);
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            border-radius: 12px;
+            box-shadow: 0 5px 40px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        h1 {
+            color: #6A5ACD;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-right: 20px;
+        }
+
+        nav li:last-child {
+            margin-right: 0;
+        }
+
+        nav a {
+            position: relative;
+            text-decoration: none;
+            color: #007BFF;
+            display: inline-block;
+            padding: 5px 0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: #007BFF;
+            transition: width 0.4s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+            left: 0;
+            background: #0056b3;
+        }
+
+        nav a:hover {
+            color: #0056b3;
+        }
+
+        .section-1 {
+            background-color: #FFFFFF;
+            padding: 40px 20px;
+            margin: 20px auto;
+            width: 90%;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            top: 60px;
+        }
+
+        .section-1 h1 {
+            color: #6A5ACD;
+            margin-bottom: 20px;
+        }
+
+        .section-1 p {
+            color: #2C2C2C;
+            line-height: 1.6;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
-
-    <h1>Home</h1>
-    <h2>Welcome, {{naming}}</h2>
-    
+    <div class="header">
+        <h1>Health Link</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Viruses</a></li>
+                <li><a href="#">More Viruses</a></li>
+                <li><a href="#">Learn to Isolate</a></li>
+                <li><a href="#">Use AI to Diagnose</a></li>
+                <li><a href="#">Sign Up/Log in</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="section-1">
+        <h1>Welcome to Health Link</h1>
+        <p>Health Link is a website that provides information about viruses and how to isolate yourself if you are infected. We also provide a tool that uses AI to help diagnose your symptoms. Whether you are a doctor or a normal civilian, this website is for you!</p>
+    </div>
 </body>
 </html>
