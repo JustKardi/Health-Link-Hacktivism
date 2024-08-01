@@ -21,26 +21,34 @@ app.get("/signup", (req,res)=>{
     res.render("signup")
 })
 
-// POST ROUTE
-app.get("/home", (req, res) => {
-    res.render("home");
+
+app.get("/landing", (req, res) => {
+    res.render("landing");
 });
 
-// HANDLE SIGNUP/LOGIN FORM SUBMISSION
+// POST ROUTE
 app.post("/signup", async (req, res) => {
     try {
         console.log(req.body); // Log the request body to debug
         const data = {
-            name: req.body.name,
-            password: req.body.password
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            age: req.body.age,
+            gender: req.body.gender,
+            city: req.body.city,
+            country: req.body.country,
+            email: req.body.email,
+            username: req.body.username,
+            password: req.body.password,
+
         };
 
-        if (!data.name || !data.password) {
-            return res.status(400).send("Name and password are required");
+        if (!data.firstName || !data.lastName || !data.age || !data.gender || !data.city || !data.country || !data.email || !data.username || !data.password) {
+            return res.status(400).send("All fields are required");
         }
 
         await collection.create(data);
-        res.render("home", { naming: req.body.name });
+        res.render("landing", { naming: req.body.name });
     } catch (error) {
         console.error("Error during signup:", error);
         res.status(500).send("Server Error");
@@ -49,10 +57,10 @@ app.post("/signup", async (req, res) => {
 
 app.post("/login", async (req, res) => {
     try {
-        const user = await collection.findOne({ name: req.body.name });
+        const user = await collection.findOne({ username: req.body.username });
         
         if (user && user.password === req.body.password) {
-            res.render("home", { naming: req.body.name });
+            res.render("landing", { naming: req.body.username });
         } else {
             res.status(401).send("Invalid username or password");
         }
@@ -65,6 +73,6 @@ app.post("/login", async (req, res) => {
 
 
 // change number in accordance with your local host
-app.listen(5503, () => {
+app.listen(5505, () => {
     console.log("port connected");
 })
