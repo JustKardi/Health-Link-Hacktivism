@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virus Research Assistant</title>
+    <style>
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.6);
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            border-radius: 12px;
+            box-shadow: 0 5px 40px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        nav li {
+            margin: 5px 10px;
+        }
+
+        nav a {
+            position: relative;
+            text-decoration: none;
+            color: #007BFF;
+            display: inline-block;
+            padding: 5px 0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: #007BFF;
+            transition: width 0.4s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+            left: 0;
+            background: #0056b3;
+        }
+
+        nav a:hover {
+            color: #0056b3;
+        }
+
+        body {
+            background-color: #D3D3D3;
+            color: #2C2C2C;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-top: 80px; /* Space for the fixed header */
+        }
+
+        h1 {
+            color: #6A5ACD;
+            margin: 10px 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff; /* White background for container */
+        }
+
+        input[type="text"] {
+            width: calc(100% - 22px); /* Adjust width to account for padding */
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* Ensures padding is included in width */
+        }
+
+        button {
+            background-color: #0056b3; /* Dark blue background */
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px; /* Slightly larger font size */
+        }
+
+        button:hover {
+            background-color: #004494; /* Darker blue on hover */
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: #0056b3; /* Dark blue for subheadings */
+        }
+
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9; /* Light gray background for results */
+        }
+
+        .virus-info {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff; /* White background for each virus info */
+        }
+
+        .virus-info strong {
+            display: block;
+            font-size: 18px;
+            color: #0056b3; /* Dark blue for virus names */
+        }
+
+        .virus-info em {
+            display: block;
+            margin-top: 5px;
+            font-weight: bold;
+            color: #333; /* Dark gray for labels */
+        }
+
+        .virus-info p {
+            margin: 5px 0;
+            color: #333; /* Dark gray for paragraph text */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Health Link</h1>
+        <nav>
+            <ul>
+                <li><a href="/landing">Home</a></li>
+                <li><a href="/viruses">Viruses</a></li>
+                <li><a href="/isolation">Learn to Isolate</a></li>
+                <li><a href="/ai">Use AI to Diagnose</a></li>
+                <li><a href="/login">Log Out</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="container">
+        <h1>Virus Research Assistant</h1>
+        <p>Enter a list of symptoms (comma-separated) to find related viruses and isolation techniques.</p>
+        
+        <input type="text" id="symptom-input" placeholder="e.g., fever, cough, fatigue">
+        <button onclick="searchViruses()">Search</button>
+
+        <div class="results" id="results-container" style="display:none;">
+            <h2>Related Viruses and Isolation Techniques</h2>
+            <div id="virus-results"></div>
+        </div>
+    </div>
+
+    <script>
+        const virusData = {
+            "Flu": {
+                symptoms: ["fever", "cough", "fatigue", "sore throat"],
+                isolation: "Stay at home and avoid contact with others for at least 7 days.",
+                treatment: "Rest, hydration, antiviral medications may be prescribed."
+            },
+            "COVID-19": {
+                symptoms: ["fever", "cough", "fatigue", "shortness of breath"],
+                isolation: "Self-isolate at home, stay in a separate room, and use a separate bathroom if possible.",
+                treatment: "Supportive care, oxygen therapy, and antiviral treatments may be required."
+            },
+            "Common Cold": {
+                symptoms: ["cough", "sore throat", "runny nose", "fatigue"],
+                isolation: "Limit contact with others and stay home until symptoms improve.",
+                treatment: "Rest, hydration, and over-the-counter medications for symptom relief."
+            },
+            "Dengue": {
+                symptoms: ["fever", "fatigue", "joint pain", "muscle pain"],
+                isolation: "Avoid mosquito bites and stay indoors during the day.",
+                treatment: "Hydration, pain relief with acetaminophen, and hospitalization in severe cases."
+            },
+            "Zika Virus": {
+                symptoms: ["fever", "rash", "joint pain", "conjunctivitis"],
+                isolation: "Stay indoors and avoid mosquito bites.",
+                treatment: "Rest, hydration, and pain relief; no specific antiviral treatment."
+            }
+        };
+
+        function searchViruses() {
+            const input = document.getElementById('symptom-input').value;
+            const symptoms = input.split(',').map(symptom => symptom.trim().toLowerCase());
+            const resultsContainer = document.getElementById('virus-results');
+            resultsContainer.innerHTML = ''; // Clear previous results
+
+            for (const virus in virusData) {
+                const virusInfo = virusData[virus];
+                const matchedSymptoms = symptoms.filter(symptom => virusInfo.symptoms.includes(symptom));
+
+                if (matchedSymptoms.length > 0) {
+                    const virusDiv = document.createElement('div');
+                    virusDiv.className = 'virus-info';
+                    virusDiv.innerHTML = `
+                        <strong>${virus}</strong>
+                        <em>Symptoms:</em> ${virusInfo.symptoms.join(', ')}
+                        <em>Isolation Technique:</em> ${virusInfo.isolation}
+                        <em>Treatment:</em> ${virusInfo.treatment}
+                    `;
+                    resultsContainer.appendChild(virusDiv);
+                }
+            }
+
+            const resultsDisplay = document.getElementById('results-container');
+            resultsDisplay.style.display = resultsContainer.innerHTML ? 'block' : 'none';
+        }
+    </script>
+
+</body>
+</html>

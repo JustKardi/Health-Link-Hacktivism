@@ -21,10 +21,22 @@ app.get("/signup", (req,res)=>{
     res.render("signup")
 })
 
-
 app.get("/landing", (req, res) => {
     res.render("landing");
 });
+
+app.get("/viruses", (req, res) => {
+    res.render("viruses");
+});
+
+app.get("/isolation", (req, res) => {
+    res.render("isolation");
+});
+
+app.get("/ai", (req, res) => {
+    res.render("ai");
+});
+
 
 // POST ROUTE
 app.post("/signup", async (req, res) => {
@@ -73,6 +85,6 @@ app.post("/login", async (req, res) => {
 
 
 // change number in accordance with your local host
-app.listen(5505, () => {
+app.listen(5506, () => {
     console.log("port connected");
 })
