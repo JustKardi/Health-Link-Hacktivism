@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Link</title>
+    <style>
+        body {
+            background-color: #D3D3D3;
+            color: #2C2C2C;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-top: 80px; /* Space for the fixed header */
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.6);
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            border-radius: 12px;
+            box-shadow: 0 5px 40px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        h1 {
+            color: #6A5ACD;
+            margin: 10px 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        nav li {
+            margin: 5px 10px;
+        }
+
+        nav a {
+            position: relative;
+            text-decoration: none;
+            color: #007BFF;
+            display: inline-block;
+            padding: 5px 0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: #007BFF;
+            transition: width 0.4s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+            left: 0;
+            background: #0056b3;
+        }
+
+        nav a:hover {
+            color: #0056b3;
+        }
+
+        .section-1 {
+            background-color: #FFFFFF;
+            padding: 20px;
+            margin: 20px auto;
+            width: 90%;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            top: 60px;
+        }
+
+        .section-1 h1 {
+            color: #6A5ACD;
+            margin-bottom: 20px;
+        }
+
+        .section-1 p {
+            color: #2C2C2C;
+            line-height: 1.6;
+            font-size: 18px;
+        }
+
+        .dropdown-container {
+            margin-top: 100px;
+            text-align: center;
+            width: 100%;
+        }
+
+        input[type="text"], select {
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+            max-width: 220px;
+            margin: 10px 0;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+        }
+
+        .table-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            max-width: 800px; /* Adjust as needed */
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding-top: 60px;
+            }
+
+            .header {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            input[type="text"], select {
+                width: 90%;
+            }
+
+            table {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Health Link</h1>
+        <nav>
+            <ul>
+                <li><a href="/landing">Home</a></li>
+                <li><a href="/viruses">Viruses</a></li>
+                <li><a href="/isolation">Learn to Isolate</a></li>
+                <li><a href="/ai">Use AI to Diagnose</a></li>
+                <li><a href="/login">Log Out</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="dropdown-container">
+        <label for="city-input">Select a City:</label>
+        <input type="text" id="city-input" placeholder="Type a city name..." onkeyup="filterCities()">
+        <select id="city-dropdown" onchange="updateTable()">
+            <option value="">--Select a City--</option>
+            <option value="New York">New York</option>
+            <option value="Los Angeles">Los Angeles</option>
+            <option value="London">London</option>
+            <option value="Tokyo">Tokyo</option>
+            <option value="Sydney">Sydney</option>
+            <option value="Berlin">Berlin</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Toronto">Toronto</option>
+            <option value="Paris">Paris</option>
+            <option value="Rio de Janeiro">Rio de Janeiro</option>
+        </select>
+    </div>
+
+    <div class="table-container">
+    <table id="disease-table">
+        <thead>
+            <tr>
+                <th>Disease</th>
+                <th>Number of Cases</th>
+                <th>Symptoms</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Default data for New York -->
+            <tr class="New York">
+                <td>Flu</td>
+                <td>1500</td>
+                <td>Cough, Fever, Fatigue</td>
+            </tr>
+            <tr class="New York">
+                <td>COVID-19</td>
+                <td>3000</td>
+                <td>Fever, Cough, Shortness of Breath</td>
+            </tr>
+            <tr class="New York">
+                <td>Common Cold</td>
+                <td>2000</td>
+                <td>Sore Throat, Runny Nose, Cough</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+
+
+
+    <script>
+        const data = {
+            "New York": [
+                { disease: "Flu", cases: 1500, symptoms: "Cough, Fever, Fatigue" },
+                { disease: "COVID-19", cases: 3000, symptoms: "Fever, Cough, Shortness of Breath" },
+                { disease: "Common Cold", cases: 2000, symptoms: "Sore Throat, Runny Nose, Cough" }
+            ],
+            "Los Angeles": [
+                { disease: "Flu", cases: 1200, symptoms: "Cough, Fever, Fatigue" },
+                { disease: "COVID-19", cases: 2500, symptoms: "Fever, Cough, Shortness of Breath" },
+                { disease: "Pneumonia", cases: 800, symptoms: "Chest Pain, Cough, Fever" }
+            ],
+            "London": [
+                { disease: "Flu", cases: 1000, symptoms: "Cough, Fever, Fatigue" },
+                { disease: "COVID-19", cases: 4000, symptoms: "Fever, Cough, Shortness of Breath" },
+                { disease: "Asthma", cases: 900, symptoms: "Wheezing, Cough, Shortness of Breath" }
+            ],
+            "Tokyo": [
+                { disease: "Flu", cases: 1100, symptoms: "Cough, Fever, Fatigue" },
+                { disease: "COVID-19", cases: 3500, symptoms: "Fever, Cough, Shortness of Breath" },
+                { disease: "Allergy", cases: 1300, symptoms: "Sneezing, Itchy Eyes, Runny Nose" }
+            ],
+            "Sydney": [
+                { disease: "Flu", cases: 900, symptoms: "Cough, Fever, Fatigue" },
+                { disease: "COVID-19", cases: 2000, symptoms: "Fever, Cough, Shortness of Breath" },
+                { disease: "Skin Infection", cases: 600, symptoms: "Redness, Swelling, Pain" }
+            ],
+            "Berlin": [
+                { disease: "Flu", cases: 1300, symptoms: "Cough, Fever, Fatigue" },
+                { disease: "COVID-19", cases: 2700, symptoms: "Fever, Cough, Shortness of Breath" },
+                { disease: "Chronic Bronchitis", cases: 700, symptoms: "Cough, Mucus Production, Wheezing" }
+            ],
+            "Mumbai": [
+                { disease: "Flu", cases: 1600, symptoms: "Cough, Fever, Fatigue" },
+                { disease: "COVID-19", cases: 3900, symptoms: "Fever, Cough, Shortness of Breath" },
+                { disease: "Dengue", cases: 1200, symptoms: "High Fever, Severe Headaches, Joint Pain" }
+            ],
+            "Toronto": [
+                { disease: "Flu", cases: 800, symptoms: "Cough, Fever, Fatigue" },
+                { disease: "COVID-19", cases: 2200, symptoms: "Fever, Cough, Shortness of Breath" },
+                { disease: "Seasonal Allergy", cases: 500, symptoms: "Sneezing, Itchy Eyes, Runny Nose" }
+            ],
+            "Paris": [
+                { disease: "Flu", cases: 1400, symptoms: "Cough, Fever, Fatigue" },
+                { disease: "COVID-19", cases: 3300, symptoms: "Fever, Cough, Shortness of Breath" },
+                { disease: "Gastroenteritis", cases: 1100, symptoms: "Diarrhea, Vomiting, Abdominal Pain" }
+            ],
+            "Rio de Janeiro": [
+                { disease: "Flu", cases: 900, symptoms: "Cough, Fever, Fatigue" },
+                { disease: "COVID-19", cases: 3100, symptoms: "Fever, Cough, Shortness of Breath" },
+                { disease: "Zika Virus", cases: 400, symptoms: "Fever, Rash, Joint Pain" }
+            ]
+        };
+
+        function updateTable() {
+            const city = document.getElementById('city-dropdown').value;
+            const tbody = document.getElementById('disease-table').getElementsByTagName('tbody')[0];
+            tbody.innerHTML = '';
+
+            if (city && data[city]) {
+                data[city].forEach(item => {
+                    const row = tbody.insertRow();
+                    row.insertCell(0).innerText = item.disease;
+                    row.insertCell(1).innerText = item.cases;
+                    row.insertCell(2).innerText = item.symptoms;
+                });
+            }
+        }
+
+        function filterCities() {
+            const input = document.getElementById('city-input').value.toLowerCase();
+            const dropdown = document.getElementById('city-dropdown');
+            const options = dropdown.getElementsByTagName('option');
+
+            let matchFound = false; // Flag to check if a match is found
+
+            for (let i = 0; i < options.length; i++) {
+                const option = options[i];
+                const optionValue = option.value.toLowerCase();
+                if (optionValue.indexOf(input) > -1) {
+                    option.style.display = ''; // Show the option
+                    matchFound = true; // A match has been found
+                } else {
+                    option.style.display = 'none'; // Hide the option
+                }
+            }
+
+            // Automatically select the first visible option if there's a match
+            if (matchFound) {
+                for (let i = 0; i < options.length; i++) {
+                    const option = options[i];
+                    if (option.style.display === '') {
+                        dropdown.value = option.value; // Set dropdown value to first matched option
+                        updateTable(); // Update the table based on the selected city
+                        break; // Stop once we find the first match
+                    }
+                }
+            } else {
+                dropdown.value = ""; // Reset dropdown if no matches
+                // Clear the table if no matches and input is valid
+                if (input.length > 0) {
+                    const tbody = document.getElementById('disease-table').getElementsByTagName('tbody')[0];
+                    tbody.innerHTML = ''; // Clear previous table data
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
