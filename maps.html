@@ -1,4 +1,3 @@
-<!-- maps.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,13 +17,13 @@
             text-align: center;
             margin-bottom: 30px;
             font-size: 2.5rem;
-            color: #fff; /* Change text color for better contrast */
-            background-color: #007BFF; /* Header background color */
+            color: #fff;
+            background-color: #007BFF;
             padding: 10px;
             border-radius: 5px;
         }
         #map {
-            height: 80vh; /* Adjust height as necessary */
+            height: 80vh;
             width: 100%;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -44,11 +43,11 @@
             color: #777;
         }
         a {
-            color: #007BFF; /* Link color */
+            color: #007BFF;
             text-decoration: none;
         }
         a:hover {
-            text-decoration: underline; /* Underline on hover */
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -63,46 +62,39 @@
     </footer>
 
     <script>
-        // Get the hospital details from the URL
         const params = new URLSearchParams(window.location.search);
         const hospitalName = params.get('name');
         const hospitalLocation = params.get('location');
 
-        // Function to initialize the Google Map
         function initMap() {
-            // Get user's current location
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
                     const userLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
                     const hospitalCoords = getHospitalCoordinates(hospitalLocation);
 
-                    // Create the map centered at the user's location
                     const map = new google.maps.Map(document.getElementById('map'), {
                         zoom: 14,
                         center: userLocation,
                     });
 
-                    // Add a marker for the user's location
                     new google.maps.Marker({
                         position: userLocation,
                         map: map,
                         title: 'You are here',
                         icon: {
-                            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png" // Optional blue marker icon
+                            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
                         }
                     });
 
-                    // Add a marker for the hospital
                     new google.maps.Marker({
                         position: hospitalCoords,
                         map: map,
                         title: hospitalName,
                         icon: {
-                            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png" // Optional red marker icon
+                            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
                         }
                     });
 
-                    // Optional: Draw a route between user and hospital
                     const directionsService = new google.maps.DirectionsService();
                     const directionsRenderer = new google.maps.DirectionsRenderer();
                     directionsRenderer.setMap(map);
@@ -126,16 +118,14 @@
             }
         }
 
-        // Function to get hospital coordinates based on the location string
         function getHospitalCoordinates(location) {
-            // Replace this mock implementation with a real API call or a mapping solution
             const hospitalCoordinates = {
                 "123 Main St, Springfield, IL": { lat: 39.7817, lng: -89.6501 },
                 "456 Elm St, Springfield, IL": { lat: 39.7820, lng: -89.6533 },
                 "789 Maple St, Springfield, IL": { lat: 39.7830, lng: -89.6510 },
                 "101 Oak St, Springfield, IL": { lat: 39.7800, lng: -89.6505 },
             };
-            return hospitalCoordinates[location] || { lat: 39.7831, lng: -89.6504 }; // Default location
+            return hospitalCoordinates[location] || { lat: 39.7831, lng: -89.6504 };
         }
     </script>
 
