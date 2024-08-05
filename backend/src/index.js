@@ -37,6 +37,17 @@ app.get("/ai", (req, res) => {
     res.render("ai");
 });
 
+app.get("/contact", (req, res) => {
+    res.render("contact");
+});
+
+app.get("/forum", (req, res) => {
+    res.render("forum");
+});
+
+app.get("/maps", (req, res) => {
+    res.render("maps");
+});
 
 // POST ROUTE
 app.post("/signup", async (req, res) => {
@@ -85,6 +96,6 @@ app.post("/login", async (req, res) => {
 
 
 // change number in accordance with your local host
-app.listen(5506, () => {
+app.listen(5507, () => {
     console.log("port connected");
 })

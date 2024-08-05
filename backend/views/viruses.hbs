@@ -4,9 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health Link</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
     <style>
+        /* CARD STYLING */
+        .card-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .card { 
+            padding: 1.5rem 2rem; 
+            border-radius: 2rem; 
+            text-align: center; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            align-items: center; 
+            overflow: hidden; 
+            transition: transform 0.3s ease; 
+            background: #5145a4; 
+
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: inherit; /* Text color */
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+        }
+
+        .card .title p {
+            color: #eaeaea; /* Text color inside the card */
+        }
+
+        #cardTitle {
+            color: #5145a4; /* Title color */
+            text-align: center; /* Center-align the text */
+            margin-top: 100px; /* Margin for spacing */
+        }
+
+        
+        /* BODY STYLING */
         body {
-            background-color: #D3D3D3;
+            background-color: #eaeaea;
             color: #2C2C2C;
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -14,25 +67,33 @@
             padding-top: 80px; /* Space for the fixed header */
         }
 
+        /* HEADER STYLING */
         .header {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.6);
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #6A5ACD;
             position: fixed;
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 95%;
+            width: 90%; /* Adjust the width to match the container */
+            max-width: 1200px; /* Optional: Set a max-width for better control */
             border-radius: 12px;
-            box-shadow: 0 5px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
             z-index: 1000;
+        }
+        
+        .container {
+            width: 90%; /* Match the header width */
+            max-width: 1200px; /* Optional: Set the same max-width as header */
+            margin: 0 auto; /* Center-align the container */
+            padding: 20px 0; /* Adjust top and bottom padding as needed */
         }
 
         h1 {
-            color: #6A5ACD;
-            margin: 10px 0;
+            color: #eaeaea;
         }
 
         nav ul {
@@ -40,18 +101,20 @@
             padding: 0;
             margin: 0;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
         }
 
         nav li {
-            margin: 5px 10px;
+            margin-right: 20px;
+        }
+
+        nav li:last-child {
+            margin-right: 0;
         }
 
         nav a {
             position: relative;
             text-decoration: none;
-            color: #007BFF;
+            color: #eaeaea;
             display: inline-block;
             padding: 5px 0;
         }
@@ -64,43 +127,21 @@
             display: block;
             margin-top: 5px;
             right: 0;
-            background: #007BFF;
+            background: #eaeaea;
             transition: width 0.4s ease;
         }
 
         nav a:hover::after {
             width: 100%;
             left: 0;
-            background: #0056b3;
+            background: #eaeaea;
         }
 
         nav a:hover {
-            color: #0056b3;
+            color: #eaeaea;
         }
 
-        .section-1 {
-            background-color: #FFFFFF;
-            padding: 20px;
-            margin: 20px auto;
-            width: 90%;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            position: relative;
-            top: 60px;
-        }
-
-        .section-1 h1 {
-            color: #6A5ACD;
-            margin-bottom: 20px;
-        }
-
-        .section-1 p {
-            color: #2C2C2C;
-            line-height: 1.6;
-            font-size: 18px;
-        }
-
+        /* TABLE STYLING */
         .dropdown-container {
             margin-top: 100px;
             text-align: center;
@@ -113,7 +154,7 @@
             width: 80%;
             max-width: 220px;
             margin: 10px 0;
-            border: 1px solid #007BFF;
+            border: 1px solid #6A5ACD;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
         }
@@ -141,7 +182,7 @@
         }
 
         th {
-            background-color: #0056b3;
+            background-color: #6A5ACD;
             color: white;
         }
 
@@ -173,20 +214,23 @@
     </style>
 </head>
 <body>
+    <!-- HEADER -->
     <div class="header">
-        <h1>Health Link</h1>
+                <h1>Health Link <i class="fa-solid fa-link"></i> </h1>
+
         <nav>
             <ul>
                 <li><a href="/landing">Home</a></li>
-                <li><a href="/viruses">Viruses</a></li>
-                <li><a href="/isolation">Learn to Isolate</a></li>
-                <li><a href="/ai">Use AI to Diagnose</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/forum">Forum</a></li>
                 <li><a href="/login">Log Out</a></li>
             </ul>
         </nav>
     </div>
 
     <div class="dropdown-container">
+        <br>
+        <h1 id="cardTitle">Disease Cases and Symptoms Overview</h1>
         <label for="city-input">Select a City:</label>
         <input type="text" id="city-input" placeholder="Type a city name..." onkeyup="filterCities()">
         <select id="city-dropdown" onchange="updateTable()">
@@ -204,8 +248,11 @@
         </select>
     </div>
 
+
     <div class="table-container">
+
     <table id="disease-table">
+
         <thead>
             <tr>
                 <th>Disease</th>
@@ -234,10 +281,71 @@
     </table>
     </div>
 
+    <!-- CARDS CONTAINER -->
+    <div class="container">
+        <h1 id = cardTitle>Health Services</h1>
+        <div class="card-list" id="card-list">
+            <!-- Cards will be appended here -->
+        </div>
+    </div>
 
 
 
     <script>
+        const sampleData = [
+            {
+                pageTitle: "Disease Cases and Symptoms Overview",
+                iconClass: "fa-solid fa-virus",
+                color: "#eaeaea", // Example color
+                link: "/viruses"
+            },
+            {
+                pageTitle: "Virus Research Assistant",
+                iconClass: "fa-solid fa-microscope",
+                color: "#eaeaea", // Example color
+                link: "/isolation"
+            },
+            {
+                pageTitle: "AI Virus Diagnostic Assistant",
+                iconClass: "fa-solid fa-robot",
+                color: "#eaeaea", // Example color
+                link: "/ai"
+            },
+            {
+                pageTitle: "Hospital Locations",
+                iconClass: "fa-solid fa-hospital",
+                color: "#eaeaea", // Example color
+                link: "/maps"
+            }
+        ];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const cardList = document.getElementById("card-list");
+
+            if (!cardList) {
+                console.error("Element not found");
+                return;
+            }
+
+            sampleData.forEach(data => {
+                const card = createCardElement(data);
+                cardList.appendChild(card);
+            });
+        });
+
+        function createCardElement(data) {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+                <a href="${data.link}">
+                    <i class="${data.iconClass}" style="font-size: 40px; margin-bottom: 20px; color: ${data.color};"></i>
+                    <div class="title">
+                        <p>${data.pageTitle}</p>
+                    </div>
+                </a>
+            `;
+            return card;
+        }
         const data = {
             "New York": [
                 { disease: "Flu", cases: 1500, symptoms: "Cough, Fever, Fatigue" },

@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Link</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Contact Doctor</title>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
-    <!-- STYLING -->
     <style>
         /* CARD STYLING */
         .card-list {
@@ -30,7 +29,7 @@
             overflow: hidden; 
             transition: transform 0.3s ease; 
             background: #5145a4; 
-            margin-top: 80px;
+
         }
 
         .card:hover {
@@ -50,6 +49,13 @@
         .card .title p {
             color: #eaeaea; /* Text color inside the card */
         }
+
+        #cardTitle {
+            color: #5145a4; /* Title color */
+            text-align: center; /* Center-align the text */
+            margin-top: 100px; /* Margin for spacing */
+        }
+
         
         /* BODY STYLING */
         body {
@@ -72,10 +78,18 @@
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 90%; /* Match the container width */
+            width: 90%; /* Adjust the width to match the container */
+            max-width: 1200px; /* Optional: Set a max-width for better control */
             border-radius: 12px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
             z-index: 1000;
+        }
+        
+        .container {
+            width: 90%; /* Match the header width */
+            max-width: 1200px; /* Optional: Set the same max-width as header */
+            margin: 0 auto; /* Center-align the container */
+            padding: 20px 0; /* Adjust top and bottom padding as needed */
         }
 
         h1 {
@@ -127,42 +141,46 @@
             color: #eaeaea;
         }
 
-        /* SECTION STYLING */
-        .section-1 {
-            background-color: #FFFFFF;
-            padding: 40px 20px;
+
+        form {
+            max-width: 600px;
             margin: 20px auto;
-            width: 90%; /* Match the container width */
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            position: relative;
-            top: 60px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .section-1 h1 {
-            color: #6A5ACD;
-            margin-bottom: 20px;
+        label, input, textarea {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
         }
 
-        .section-1 p {
-            color: #2C2C2C;
-            line-height: 1.6;
-            font-size: 18px;
+        input, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
-        .container {
-            width: 90%; /* Match the header and section-1 width */
-            margin: 0 auto;
+        button {
+            background-color: #6A5ACD;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #6A5ACD;
         }
     </style>
 </head>
-
 <body>
-    <!-- HEADER -->
     <div class="header">
-        <h1>Health Link <i class="fa-solid fa-link"></i> </h1>
-
+                <h1>Health Link <i class="fa-solid fa-link"></i> </h1>
         <nav>
             <ul>
                 <li><a href="/landing">Home</a></li>
@@ -172,21 +190,29 @@
             </ul>
         </nav>
     </div>
-
-    <!-- MAIN SECTION -->
-    <div class="section-1">
-        <h1>Welcome to Health Link</h1>
-        <p>Health Link is a website that provides information about viruses and how to isolate yourself if you are infected. We also provide a tool that uses AI to help diagnose your symptoms. Whether you are a doctor or a normal civilian, this website is for you!</p>
-    </div>
+        <h1 id = cardTitle>Contact</h1>
+    <form action="https://formspree.io/f/mkgwrjze" method="POST">
+        <label for="to">To:</label>
+        <input type="text" id="to" name="to" value="">
+        
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject">
+        
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="5"></textarea>
+        
+        <button type="submit">Send Message</button>
+    </form>
 
     <!-- CARDS CONTAINER -->
     <div class="container">
+        <h1 id = cardTitle>Health Services</h1>
         <div class="card-list" id="card-list">
             <!-- Cards will be appended here -->
         </div>
     </div>
 
-    <!-- SCRIPT -->
+
     <script>
         const sampleData = [
             {
@@ -208,7 +234,7 @@
                 link: "/ai"
             },
             {
-                 pageTitle: "Hospital Locations",
+                pageTitle: "Hospital Locations",
                 iconClass: "fa-solid fa-hospital",
                 color: "#eaeaea", // Example color
                 link: "/maps"
@@ -242,6 +268,42 @@
             `;
             return card;
         }
+
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Fetch the form values
+            const to = document.getElementById('to').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            // Submit the form data via fetch API
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    to: to,
+                    _subject: subject,
+                    message: message
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Successful submission
+                    window.location.href = 'success.html'; // Redirect to success page
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error if needed
+            });
+        });
     </script>
 </body>
 </html>
