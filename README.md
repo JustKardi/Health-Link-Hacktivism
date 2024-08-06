@@ -10,7 +10,7 @@ Steps
     - Get the connection string (URI) for your cluster.
 
 2. Create the Database
-    - Once MongoDB is installed and running, create a database called logincollections.
+    - Once MongoDB is installed and running, create a database called logincollections
 
 3. Project Setup
     - Clone repository
