@@ -268,42 +268,22 @@
             `;
             return card;
         }
+    const form = document.querySelector('form');
 
-        const form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
+        // Fetch the form values
+        const to = document.getElementById('to').value;
+        const subject = document.getElementById('subject').value;
+        const message = document.getElementById('message').value;
 
-            // Fetch the form values
-            const to = document.getElementById('to').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
+        // Create a mailto URL
+        const mailtoLink = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
 
-            // Submit the form data via fetch API
-            fetch(form.action, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    to: to,
-                    _subject: subject,
-                    message: message
-                })
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Successful submission
-                    window.location.href = 'success.html'; // Redirect to success page
-                } else {
-                    throw new Error('Form submission failed');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Handle error if needed
-            });
-        });
+        // Open the default email client with the constructed mailto link
+        window.location.href = mailtoLink;
+    });
     </script>
 </body>
 </html>
