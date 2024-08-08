@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Virus Diagnostic Assistant</title>
+    <title>Virus Research and Diagnostic Assistant</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,7 +26,9 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        input[type="text"], input[type="number"], select {
+        input[type="text"],
+        input[type="number"],
+        select {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -155,8 +157,8 @@
     </header>
 
     <div class="container">
-        <h1>AI Virus Diagnostic Assistant</h1>
-        <p>Input your symptoms, duration, and severity to find possible viruses.</p>
+        <h1>AI Virus Research and Diagnostic Assistant</h1>
+        <p>Input your symptoms, duration, and severity to find possible viruses and related information.</p>
         
         <input type="text" id="symptom-input" placeholder="Enter your symptoms (comma-separated)">
         <input type="number" id="duration-input" placeholder="How many days have you had these symptoms?">
@@ -175,6 +177,8 @@
             <div id="virus-results"></div>
             <h3>Recommended Over-the-Counter Medications</h3>
             <div id="medication-results"></div>
+            <h3>Recommended Doctors</h3>
+            <div id="doctor-results"></div>
         </div>
 
         <div class="disclaimer">
@@ -235,45 +239,29 @@
             const symptoms = input.split(',').map(symptom => symptom.trim().toLowerCase());
             const resultsContainer = document.getElementById('virus-results');
             const medicationResults = document.getElementById('medication-results');
+            const doctorResults = document.getElementById('doctor-results');
             resultsContainer.innerHTML = ''; // Clear previous results
             medicationResults.innerHTML = ''; // Clear previous medications
+            doctorResults.innerHTML = ''; // Clear previous doctors
 
             for (const virus in virusData) {
                 const virusInfo = virusData[virus];
-                const matchedSymptoms = symptoms.filter(symptom => virusInfo.symptoms.includes(symptom));
+                const hasSymptoms = virusInfo.symptoms.some(symptom => symptoms.includes(symptom));
+                const isDurationValid = duration >= virusInfo.duration.min && duration <= virusInfo.duration.max;
 
-                if (matchedSymptoms.length > 0 && 
-                    duration >= virusInfo.duration.min && 
-                    duration <= virusInfo.duration.max &&
-                    (severity === virusInfo.severity || severity === "moderate" && virusInfo.severity === "mild")) {
-                    
-                    const virusDiv = document.createElement('div');
-                    virusDiv.innerHTML = `<strong>${virus}</strong><br>
-                                          Symptoms: ${virusInfo.symptoms.join(', ')}<br>
-                                          Duration: ${virusInfo.duration.min}-${virusInfo.duration.max} days<br>`;
-                    resultsContainer.appendChild(virusDiv);
-                    
-                    // Add medications
-                    const medicationDiv = document.createElement('div');
-                    medicationDiv.innerHTML = `<strong>Recommended Medications:</strong> ${virusInfo.medications.join(', ')}`;
-                    medicationResults.appendChild(medicationDiv);
-
-                    // Check if doctors are available
-                    if (virusInfo.doctors && virusInfo.doctors.length > 0) {
-                        const doctorsDiv = document.createElement('div');
-                        doctorsDiv.innerHTML = `<strong>Recommended Doctors:</strong><br>`;
+                if (hasSymptoms && isDurationValid) {
+                    resultsContainer.innerHTML += `<p>${virus}</p>`;
+                    medicationResults.innerHTML += `<p>${virusInfo.medications.join(', ')}</p>`;
+                    if (virusInfo.doctors) {
                         virusInfo.doctors.forEach(doctor => {
-                            doctorsDiv.innerHTML += `<a href="contact.html?email=${encodeURIComponent(doctor.email)}">${doctor.name}</a><br>`;
+                            doctorResults.innerHTML += `<p>${doctor.name} - Email: ${doctor.email}</p>`;
                         });
-                        resultsContainer.appendChild(doctorsDiv);
                     }
                 }
             }
 
-            const resultsDisplay = document.getElementById('results-container');
-            resultsDisplay.style.display = resultsContainer.innerHTML ? 'block' : 'none';
+            document.getElementById('results-container').style.display = resultsContainer.innerHTML ? 'block' : 'none';
         }
     </script>
-
 </body>
 </html>
