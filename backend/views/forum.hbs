@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Public Health Forum</title>
@@ -8,7 +8,56 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* Global Styles */
+        /* CARD STYLING */
+        .card-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .card { 
+            padding: 1.5rem 2rem; 
+            border-radius: 2rem; 
+            text-align: center; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            align-items: center; 
+            overflow: hidden; 
+            transition: transform 0.3s ease; 
+            background: #5145a4; 
+
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: inherit; /* Text color */
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+        }
+
+        .card .title p {
+            color: #eaeaea; /* Text color inside the card */
+        }
+
+        #cardTitle {
+            color: #5145a4; /* Title color */
+            text-align: center; /* Center-align the text */
+            margin-top: 100px; /* Margin for spacing */
+        }
+
+        
+        /* BODY STYLING */
         body {
             background-color: #eaeaea;
             color: #2C2C2C;
@@ -18,11 +67,7 @@
             padding-top: 80px; /* Space for the fixed header */
         }
 
-        h1 {
-            color: #eaeaea;
-        }
-
-        /* Header Styles */
+        /* HEADER STYLING */
         .header {
             display: flex;
             align-items: center;
@@ -33,15 +78,22 @@
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 90%;
-            max-width: 1200px;
+            width: 90%; /* Adjust the width to match the container */
+            max-width: 1200px; /* Optional: Set a max-width for better control */
             border-radius: 12px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
             z-index: 1000;
         }
+        
+        .container {
+            width: 90%; /* Match the header width */
+            max-width: 1200px; /* Optional: Set the same max-width as header */
+            margin: 0 auto; /* Center-align the container */
+            padding: 20px 0; /* Adjust top and bottom padding as needed */
+        }
 
-        .header h1 {
-            margin: 0;
+        h1 {
+            color: #eaeaea;
         }
 
         nav ul {
@@ -82,165 +134,128 @@
         nav a:hover::after {
             width: 100%;
             left: 0;
+            background: #eaeaea;
         }
 
         nav a:hover {
             color: #eaeaea;
         }
 
-        /* Main Content Styles */
+
         main {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically if needed */
+            flex-direction: column; /* Stack vertically */
             max-width: 800px;
-            margin: 0 auto;
+            margin: 0 auto; /* Center-align the main container */
             padding: 20px;
             background-color: white;
             border-radius: 5px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            text-align: center; /* Center text within main */
         }
 
-        .forumContainer {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
+      textarea {
+        width: calc(100% - 20px);
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        resize: none; /* Prevent resizing for textarea */
+      }
+
+      textarea {
+        height: 150px; /* Increased height for the message box */
+      }
+
+      button {
+        background-color: #6A5ACD;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #6A5ACD; /* Darken button on hover */
+      }
+
+      #postsContainer {
+        margin-top: 20px;
+        text-align: left; /* Align text left within posts */
+      }
+
+      .post {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0;
+        word-wrap: break-word; /* Ensure text wraps to the next line */
+      }
+
+      .post h3 {
+        margin: 0 0 5px;
+        font-size: 1.2em;
+      }
+
+      .reply {
+        background-color: #e9f5e9; /* Keep the green reply color */
+        border: 1px solid #4caf50;
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .reply h4 {
+        margin: 0 0 5px;
+        font-size: 1.1em;
+      }
+
+      footer {
+        text-align: center;
+        padding: 10px 20px; /* Reduced padding */
+        background-color: #f1f1f1;
+        width: 100%;
+      }
+
+      .forumContainer {
+        width: 100%; /* Set the width of the forum container */
+        max-width: 600px; /* Optional: Set a max-width */
+        margin: 0 auto; /* Center-align the forum container */
+      }
+
+      /* Responsive design */
+      @media (max-width: 600px) {
+        header,
+        footer {
+          padding: 10px; /* Further reduce padding on smaller screens */
         }
 
-        textarea {
-            width: calc(100% - 20px);
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            resize: none;
-            height: 150px;
+        main {
+          padding: 15px; /* Adjust padding for main on smaller screens */
         }
 
         button {
-            background-color: #6A5ACD;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 15px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background-color 0.3s;
+          padding: 8px 12px; /* Adjust button size on smaller screens */
         }
 
-        button:hover {
-            background-color: #5a4c9b; /* Slightly darker shade */
+        textarea {
+          height: 120px; /* Adjust height for smaller screens */
         }
-
-        #postsContainer {
-            margin-top: 20px;
-            text-align: left;
-        }
-
-        .post, .reply {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 10px 0;
-        }
-
-        .reply {
-            background-color: #e9f5e9;
-            border-color: #4caf50;
-        }
-
-        .post h3, .reply h4 {
-            margin: 0 0 5px;
-        }
-
-        .post h3 {
-            font-size: 1.2em;
-        }
-
-        .reply h4 {
-            font-size: 1.1em;
-        }
-
-        footer {
-            text-align: center;
-            padding: 10px 20px;
-            background-color: #f1f1f1;
-            width: 100%;
-        }
-
-        /* Card Styles */
-        .card-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            padding: 1.5rem 2rem;
-            border-radius: 2rem;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            background: #5145a4;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card a {
-            text-decoration: none;
-            color: inherit;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .card .title p {
-            color: #eaeaea;
-        }
-
-        #cardTitle {
-            color: #5145a4;
-            text-align: center;
-            margin-top: 100px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 600px) {
-            .header, footer {
-                padding: 10px;
-            }
-
-            main {
-                padding: 15px;
-            }
-
-            button {
-                padding: 8px 12px;
-            }
-
-            textarea {
-                height: 120px;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- HEADER -->
     <div class="header">
-        <h1>Health Link <i class="fa-solid fa-link"></i></h1>
+        <h1>Health Link <i class="fa-solid fa-link"></i> </h1>
+
+
         <nav>
             <ul>
                 <li><a href="/landing">Home</a></li>
@@ -252,105 +267,81 @@
     </div>
 
     <header>
-        <h1>Public Health Forum</h1>
+      <h1>Public Health Forum</h1>
     </header>
     <main>
-        <h1 id="cardTitle">Public Forum</h1>
-        <div class="forumContainer">
-            <section>
-                <h2>Post a Message</h2>
-                <form id="postForm">
-                    <input type="text" id="userName" placeholder="Your Name" required />
-                    <textarea id="userMessage" placeholder="Your Message" required></textarea>
-                    <button type="submit">Post</button>
-                    <input type="checkbox" id="subscribeCheckbox" />
-                    <label for="subscribeCheckbox">Subscribe to replies</label>
-                </form>
-            </section>
+       <h1 id="cardTitle">Public Forum</h1>
+      <div class="forumContainer">
+        <section>
+          <h2>Post a Message</h2>
+          <form id="postForm">
+            <input type="text" id="userName" placeholder="Your Name" required />
+            <textarea
+              id="userMessage"
+              placeholder="Your Message"
+              required
+            ></textarea>
+            <button type="submit">Post</button>
+            <input type="checkbox" id="subscribeCheckbox" />
+            <label for="subscribeCheckbox">Subscribe to replies</label>
+          </form>
+        </section>
 
-            <section>
-                <h2>Forum Posts</h2>
-                <div id="postsContainer"></div>
-            </section>
-        </div>
+        <section>
+          <h2>Forum Posts</h2>
+          <div id="postsContainer"></div>
+        </section>
+      </div>
     </main>
-
+  </body>
     <!-- CARDS CONTAINER -->
     <div class="container">
-        <h1 id="cardTitle">Health Services</h1>
+        <h1 id = cardTitle>Health Services</h1>
         <div class="card-list" id="card-list">
             <!-- Cards will be appended here -->
         </div>
     </div>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const cardList = document.getElementById("card-list");
-        const postForm = document.getElementById("postForm");
-        const postsContainer = document.getElementById("postsContainer");
-
-        if (!cardList) {
-            console.error("Element not found");
-            return;
-        }
-
-        // Sample Data for Cards
         const sampleData = [
             {
                 pageTitle: "Disease Cases and Symptoms Overview",
                 iconClass: "fa-solid fa-virus",
-                color: "#eaeaea",
+                color: "#eaeaea", // Example color
                 link: "/viruses"
             },
             {
                 pageTitle: "Virus Research Assistant",
                 iconClass: "fa-solid fa-microscope",
-                color: "#eaeaea",
+                color: "#eaeaea", // Example color
                 link: "/isolation"
             },
             {
                 pageTitle: "AI Virus Diagnostic Assistant",
                 iconClass: "fa-solid fa-robot",
-                color: "#eaeaea",
+                color: "#eaeaea", // Example color
                 link: "/ai"
             },
             {
                 pageTitle: "Hospital Locations",
                 iconClass: "fa-solid fa-hospital",
-                color: "#eaeaea",
+                color: "#eaeaea", // Example color
                 link: "/maps"
             }
         ];
 
-        // Create and Append Cards
-        sampleData.forEach(data => {
-            const card = createCardElement(data);
-            cardList.appendChild(card);
-        });
+        document.addEventListener("DOMContentLoaded", function() {
+            const cardList = document.getElementById("card-list");
 
-        // Form Submission Handler
-        postForm.addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            const userName = document.getElementById("userName").value;
-            const userMessage = document.getElementById("userMessage").value;
-            const subscribe = document.getElementById("subscribeCheckbox").checked;
-
-            if (userName && userMessage) {
-                const postElement = document.createElement("div");
-                postElement.className = "post";
-                postElement.innerHTML = `
-                    <h3>${userName}</h3>
-                    <p>${userMessage}</p>
-                    ${subscribe ? '<p><strong>Subscribed to replies</strong></p>' : ''}
-                `;
-
-                postsContainer.appendChild(postElement);
-
-                // Clear form fields
-                postForm.reset();
-            } else {
-                alert("Please fill in both fields.");
+            if (!cardList) {
+                console.error("Element not found");
+                return;
             }
+
+            sampleData.forEach(data => {
+                const card = createCardElement(data);
+                cardList.appendChild(card);
+            });
         });
 
         function createCardElement(data) {
@@ -366,8 +357,7 @@
             `;
             return card;
         }
-    });
 </script>
 
-</body>
+
 </html>
