@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Articles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #007BFF; /* Primary color for navbar */
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+            transition: box-shadow 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h3 {
+            margin: 0;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .card a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .card a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">Health Link</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Medical Articles</h1>
+        <input type="text" id="search-input" placeholder="Search articles...">
+        <div id="articles-container"></div>
+    </div>
+
+    <script>
+        const articles = [
+            {
+                title: "Understanding COVID-19 Variants",
+                description: "An overview of various COVID-19 variants and their impact on public health.",
+                link: "https://www.who.int/news-room/q-a-detail/coronavirus-variants",
+                keywords: ["covid", "variants", "health"]
+            },
+            {
+                title: "The Importance of Vaccination",
+                description: "Why vaccines are crucial in controlling the spread of diseases.",
+                link: "https://www.cdc.gov/vaccines/vac-gen/imz-basics.htm",
+                keywords: ["vaccination", "health", "disease"]
+            },
+            {
+                title: "Mental Health During the Pandemic",
+                description: "Addressing mental health challenges faced during COVID-19.",
+                link: "https://www.nimh.nih.gov/health/topics/coping-with-pandemic-anxiety",
+                keywords: ["mental health", "pandemic", "covid"]
+            },
+            {
+                title: "The Future of Telemedicine",
+                description: "How telemedicine is changing healthcare delivery.",
+                link: "https://www.healthit.gov/topic/telehealth",
+                keywords: ["telemedicine", "healthcare", "technology"]
+            },
+            {
+                title: "Nutrition and Immunity",
+                description: "How diet can affect your immune system.",
+                link: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7835528/",
+                keywords: ["nutrition", "immunity", "health"]
+            },
+            {
+                title: "How COVID-19 Affects the Body",
+                description: "A detailed examination of how the virus impacts various systems.",
+                link: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7584498/",
+                keywords: ["covid", "effects", "health"]
+            },
+            {
+                title: "Vaccines Explained",
+                description: "An in-depth look at how vaccines work and their importance.",
+                link: "https://www.immunize.org/askexperts/experts_vaccines.asp",
+                keywords: ["vaccines", "immunization", "health"]
+            },
+            {
+                title: "Long COVID: Symptoms and Treatment",
+                description: "Understanding long-term effects of COVID-19 and how to manage them.",
+                link: "https://www.health.harvard.edu/diseases-and-conditions/what-is-long-covid",
+                keywords: ["long covid", "symptoms", "treatment"]
+            }
+        ];
+
+        function displayArticles(articlesToDisplay) {
+            const container = document.getElementById('articles-container');
+            container.innerHTML = ''; // Clear previous articles
+
+            articlesToDisplay.forEach(article => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <h3>${article.title}</h3>
+                    <p>${article.description}</p>
+                    <a href="${article.link}" target="_blank">Read more</a>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filteredArticles = articles.filter(article => 
+                article.title.toLowerCase().includes(query) ||
+                article.keywords.some(keyword => keyword.includes(query))
+            );
+            displayArticles(filteredArticles);
+        });
+
+        // Display all articles on page load
+        displayArticles(articles);
+    </script>
+</body>
+</html>
