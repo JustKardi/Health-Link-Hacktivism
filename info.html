@@ -33,6 +33,7 @@
 
         main {
             padding: 20px;
+            text-align: center;
         }
 
         h2 {
@@ -42,13 +43,9 @@
             padding-bottom: 5px;
         }
 
-        ul {
+        .tips ul {
             margin-left: 20px;
             margin-bottom: 20px;
-        }
-
-        .tips ul {
-            list-style-type: square;
         }
 
         .chart table {
@@ -83,7 +80,20 @@
             margin-top: 20px;
         }
 
-        /* Button style */
+        /* Game styling */
+        .game-container {
+            margin-top: 20px;
+        }
+
+        .article {
+            background: white;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
         .btn {
             background-color: #007BFF;
             color: white;
@@ -92,7 +102,7 @@
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            margin: 10px 0;
+            margin: 10px;
             cursor: pointer;
             border-radius: 5px;
             transition: background-color 0.3s;
@@ -100,6 +110,27 @@
 
         .btn:hover {
             background-color: #0056b3;
+        }
+
+        /* Popup styling */
+        .popup {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -161,6 +192,21 @@
                 </tbody>
             </table>
         </section>
+
+        <div class="game-container">
+            <h2>Test Your Skills</h2>
+            <div class="article" id="article"></div>
+            <button class="btn" id="reliableBtn">Reliable</button>
+            <button class="btn" id="unreliableBtn">Unreliable</button>
+        </div>
+
+        <div class="popup" id="popup">
+            <div class="popup-content" id="popupContent">
+                <p id="resultText"></p>
+                <button class="btn" id="continueBtn">Continue</button>
+                <button class="btn" id="quitBtn">Quit</button>
+            </div>
+        </div>
     </main>
 
     <footer>
@@ -168,8 +214,127 @@
     </footer>
 
     <script>
-        // You can add any interactive JavaScript code here
-        console.log("Page loaded. Ready to spot misinformation!");
+        const articles = [
+            {
+                text: "Research from the CDC indicates that a healthy diet rich in fruits, vegetables, whole grains, and lean proteins can help maintain overall health and prevent chronic diseases. Nutrition plays a critical role in health, especially during times of illness.",
+                reliable: true,
+                source: "Source: CDC"
+            },
+            {
+                text: "According to the CDC, regular physical activity is crucial for maintaining a healthy lifestyle. Engaging in at least 150 minutes of moderate-intensity aerobic activity each week can help reduce the risk of chronic diseases such as heart disease, diabetes, and obesity.",
+                reliable: true,
+                source: "Source: CDC"
+            },
+            {
+                text: "There's a misconception that all health supplements are beneficial without side effects. However, many supplements can interact with medications or cause adverse effects. Always consult a healthcare provider before starting any new supplement regimen.",
+                reliable: false,
+                source: "Source: Fake Health News"
+            },
+            {
+                text: "The CDC recommends getting vaccinated against influenza every year to protect yourself and your community. Vaccination not only reduces the risk of getting the flu but also helps prevent its spread to vulnerable populations.",
+                reliable: true,
+                source: "Source: CDC"
+            },
+            {
+                text: "A popular rumor claims that drinking vinegar can cure diabetes. This claim is misleading and not supported by scientific evidence. Proper diabetes management involves a combination of diet, exercise, and medication as advised by healthcare professionals.",
+                reliable: false,
+                source: "Source: Health Myth Busters"
+            },
+            {
+                text: "There is a belief that wearing a face mask can harm your health. The CDC states that wearing masks is a safe and effective measure to prevent the spread of respiratory infections, including COVID-19. They help protect not only the wearer but also those around them.",
+                reliable: false,
+                source: "Source: Misinformation Reports"
+            },
+            {
+                text: "Research from the World Health Organization emphasizes the importance of hand hygiene in preventing infections. Regular handwashing with soap and water can significantly reduce the spread of harmful bacteria and viruses.",
+                reliable: true,
+                source: "Source: WHO"
+            },
+            {
+                text: "Some articles suggest that taking large doses of vitamin C can prevent the common cold. However, scientific evidence does not support this claim, and excessive intake of vitamin C can lead to side effects.",
+                reliable: false,
+                source: "Source: Health Myths Exposed"
+            },
+            {
+                text: "According to the World Health Organization, mental health is just as important as physical health. Seeking help from mental health professionals can lead to improved well-being and quality of life.",
+                reliable: true,
+                source: "Source: WHO"
+            },
+            {
+                text: "A viral post claims that a specific fruit can cure cancer. Such claims are not supported by scientific evidence and can lead patients to forgo effective treatments. Always consult with a medical professional for treatment advice.",
+                reliable: false,
+                source: "Source: Health Hoaxes Today"
+            },
+            {
+                text: "The CDC provides guidelines on preventing the spread of sexually transmitted infections (STIs). Using condoms and getting tested regularly are key strategies for maintaining sexual health.",
+                reliable: true,
+                source: "Source: CDC"
+            },
+            {
+                text: "Many believe that you can detoxify your body with special drinks. However, your body has its own detoxification systems, primarily the liver and kidneys, and such claims are often unsubstantiated.",
+                reliable: false,
+                source: "Source: Detox Myths Unveiled"
+            },
+            {
+                text: "The CDC recommends annual health screenings to detect potential health issues early. Regular check-ups can significantly improve treatment outcomes and overall health.",
+                reliable: true,
+                source: "Source: CDC"
+            }
+        ];
+
+        // Shuffle articles
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        shuffle(articles);
+
+        let currentArticleIndex = 0;
+
+        function showArticle() {
+            const article = articles[currentArticleIndex];
+            document.getElementById('article').innerText = `${article.text} (${article.source})`;
+        }
+
+        function checkAnswer(userAnswer) {
+            const article = articles[currentArticleIndex];
+            const isCorrect = (userAnswer === article.reliable);
+            document.getElementById('resultText').innerText = isCorrect 
+                ? "Correct! This article is indeed reliable." 
+                : "Incorrect! This article is actually unreliable.";
+            document.getElementById('popup').style.display = 'flex';
+        }
+
+        document.getElementById('reliableBtn').addEventListener('click', function() {
+            checkAnswer(true);
+        });
+
+        document.getElementById('unreliableBtn').addEventListener('click', function() {
+            checkAnswer(false);
+        });
+
+        document.getElementById('continueBtn').addEventListener('click', function() {
+            currentArticleIndex++;
+            if (currentArticleIndex < articles.length) {
+                showArticle();
+                document.getElementById('popup').style.display = 'none';
+            } else {
+                document.getElementById('resultText').innerText = "You've completed the game!";
+                document.getElementById('continueBtn').style.display = 'none';
+                document.getElementById('quitBtn').innerText = 'Finish';
+                document.getElementById('popup').style.display = 'flex';
+            }
+        });
+
+        document.getElementById('quitBtn').addEventListener('click', function() {
+            window.location.href = 'info.html'; // Redirect to info.html
+        });
+
+        // Start the game by showing the first article
+        showArticle();
     </script>
 </body>
 </html>
