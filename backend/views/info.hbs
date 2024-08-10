@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotting Misinformation in Health Articles</title>
+
+    <style>
+        /* CARD STYLING */
+        .card-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .card { 
+            padding: 1.5rem 2rem; 
+            border-radius: 2rem; 
+            text-align: center; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            align-items: center; 
+            overflow: hidden; 
+            transition: transform 0.3s ease; 
+            background: #5145a4; 
+
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: inherit; /* Text color */
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+        }
+
+        .card .title p {
+            color: #eaeaea; /* Text color inside the card */
+        }
+
+        #cardTitle {
+            color: #5145a4; /* Title color */
+            text-align: center; /* Center-align the text */
+            margin-top: 100px; /* Margin for spacing */
+        }
+
+        
+        /* BODY STYLING */
+        body {
+            background-color: #eaeaea;
+            color: #2C2C2C;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-top: 80px; /* Space for the fixed header */
+        }
+
+        /* HEADER STYLING */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #6A5ACD;
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%; /* Adjust the width to match the container */
+            max-width: 1200px; /* Optional: Set a max-width for better control */
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        
+        .container {
+            width: 90%; /* Match the header width */
+            max-width: 1200px; /* Optional: Set the same max-width as header */
+            margin: 0 auto; /* Center-align the container */
+            padding: 20px 0; /* Adjust top and bottom padding as needed */
+        }
+
+        h1 {
+            color: #eaeaea;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-right: 20px;
+        }
+
+        nav li:last-child {
+            margin-right: 0;
+        }
+
+        nav a {
+            position: relative;
+            text-decoration: none;
+            color: #eaeaea;
+            display: inline-block;
+            padding: 5px 0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: #eaeaea;
+            transition: width 0.4s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+            left: 0;
+            background: #eaeaea;
+        }
+
+        nav a:hover {
+            color: #eaeaea;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background: #007BFF;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #007BFF;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #007BFF;
+            padding-bottom: 5px;
+        }
+
+        .tips ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .chart table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .chart th, .chart td {
+            border: 1px solid #007BFF;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .chart th {
+            background: #007BFF;
+            color: white;
+        }
+
+        .chart tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #007BFF;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        /* Game styling */
+        .game-container {
+            margin-top: 20px;
+        }
+
+        .article {
+            background: white;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Popup styling */
+        .popup {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <h1>Health Link <i class="fa-solid fa-link"></i> </h1>
+        <nav>
+            <ul>
+                <li><a href="/landing">Home</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/forum">Forum</a></li>
+                <li><a href="/login">Log Out</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <header>
+        <h1>Spotting Misinformation in Health Articles</h1>
+        <p>Learn how to identify misinformation and understand its importance.</p>
+        <a href="#tips" class="btn">Get Started</a>
+    </header>
+
+    <main>
+        <section class="importance">
+            <h2>Why It’s Important to Avoid Misinformation</h2>
+            <p>Misinformation can lead to harmful health decisions, confusion, and panic. Trustworthy information is vital for making informed health choices. Here's why it matters:</p>
+            <ul>
+                <li><strong>Health Risks:</strong> Acting on false information can lead to dangerous behaviors.</li>
+                <li><strong>Trust Issues:</strong> Misinformation erodes trust in legitimate health sources.</li>
+                <li><strong>Public Health Impact:</strong> Widespread misinformation can hinder efforts to control diseases.</li>
+            </ul>
+        </section>
+
+        <section class="tips" id="tips">
+            <h2>How to Spot Misinformation</h2>
+            <p>Look for these signs when reading health articles:</p>
+            <ul>
+                <li>Lack of credible sources</li>
+                <li>Emotional or sensational language</li>
+                <li>Unverified claims or statistics</li>
+                <li>Articles that ignore scientific consensus</li>
+            </ul>
+        </section>
+
+        <section class="chart">
+            <h2>Do's and Don'ts</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Do's</th>
+                        <th>Don'ts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Verify information with trusted sources (e.g., CDC, WHO)</td>
+                        <td>Share articles without checking their credibility</td>
+                    </tr>
+                    <tr>
+                        <td>Look for peer-reviewed studies</td>
+                        <td>Trust anecdotal evidence or personal testimonials</td>
+                    </tr>
+                    <tr>
+                        <td>Check the publication date</td>
+                        <td>Follow outdated information</td>
+                    </tr>
+                    <tr>
+                        <td>Consult healthcare professionals</td>
+                        <td>Take advice from unqualified sources</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <div class="game-container">
+            <h2>Test Your Skills</h2>
+            <div class="article" id="article"></div>
+            <button class="btn" id="reliableBtn">Reliable</button>
+            <button class="btn" id="unreliableBtn">Unreliable</button>
+        </div>
+
+        <div class="popup" id="popup">
+            <div class="popup-content" id="popupContent">
+                <p id="resultText"></p>
+                <button class="btn" id="continueBtn">Continue</button>
+                <button class="btn" id="quitBtn">Quit</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Health Awareness Initiative</p>
+    </footer>
+
+
+</body>
+
+<!-- CARDS CONTAINER -->
+<div class="container">
+    <h1 id = cardTitle>Health Services</h1>
+     <div class="card-list" id="card-list">
+        
+        <!-- Cards will be appended here -->
+    </div>
+</div>
+
+
+<script>
+    const sampleData = [
+            {
+                pageTitle: "Disease Cases and Symptoms Overview",
+                iconClass: "fa-solid fa-virus",
+                color: "#eaeaea", // Example color
+                link: "/viruses"
+            },
+            {
+                pageTitle: "Virus Research Assistant",
+                iconClass: "fa-solid fa-microscope",
+                color: "#eaeaea", // Example color
+                link: "/info"
+            },
+            {
+                pageTitle: "AI Virus Diagnostic Assistant",
+                iconClass: "fa-solid fa-robot",
+                color: "#eaeaea", // Example color
+                link: "/ai"
+            },
+            {
+                pageTitle: "Hospital Locations",
+                iconClass: "fa-solid fa-hospital",
+                color: "#eaeaea", // Example color
+                link: "/maps"
+            }
+        ];
+        document.addEventListener("DOMContentLoaded", function() {
+            const cardList = document.getElementById("card-list");
+
+            if (!cardList) {
+                console.error("Element not found");
+                return;
+            }
+
+            sampleData.forEach(data => {
+                const card = createCardElement(data);
+                cardList.appendChild(card);
+            });
+        });
+
+        function createCardElement(data) {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+                <a href="${data.link}">
+                    <i class="${data.iconClass}" style="font-size: 40px; margin-bottom: 20px; color: ${data.color};"></i>
+                    <div class="title">
+                        <p>${data.pageTitle}</p>
+                    </div>
+                </a>
+            `;
+            return card;
+        }
+
+        const articles = [
+            {
+                text: "Research from the CDC indicates that a healthy diet rich in fruits, vegetables, whole grains, and lean proteins can help maintain overall health and prevent chronic diseases. Nutrition plays a critical role in health, especially during times of illness.",
+                reliable: true,
+                source: "Source: CDC"
+            },
+            {
+                text: "According to the CDC, regular physical activity is crucial for maintaining a healthy lifestyle. Engaging in at least 150 minutes of moderate-intensity aerobic activity each week can help reduce the risk of chronic diseases such as heart disease, diabetes, and obesity.",
+                reliable: true,
+                source: "Source: CDC"
+            },
+            {
+                text: "There's a misconception that all health supplements are beneficial without side effects. However, many supplements can interact with medications or cause adverse effects. Always consult a healthcare provider before starting any new supplement regimen.",
+                reliable: false,
+                source: "Source: Fake Health News"
+            },
+            {
+                text: "The CDC recommends getting vaccinated against influenza every year to protect yourself and your community. Vaccination not only reduces the risk of getting the flu but also helps prevent its spread to vulnerable populations.",
+                reliable: true,
+                source: "Source: CDC"
+            },
+            {
+                text: "A popular rumor claims that drinking vinegar can cure diabetes. This claim is misleading and not supported by scientific evidence. Proper diabetes management involves a combination of diet, exercise, and medication as advised by healthcare professionals.",
+                reliable: false,
+                source: "Source: Health Myth Busters"
+            },
+            {
+                text: "There is a belief that wearing a face mask can harm your health. The CDC states that wearing masks is a safe and effective measure to prevent the spread of respiratory infections, including COVID-19. They help protect not only the wearer but also those around them.",
+                reliable: false,
+                source: "Source: Misinformation Reports"
+            },
+            {
+                text: "Research from the World Health Organization emphasizes the importance of hand hygiene in preventing infections. Regular handwashing with soap and water can significantly reduce the spread of harmful bacteria and viruses.",
+                reliable: true,
+                source: "Source: WHO"
+            },
+            {
+                text: "Some articles suggest that taking large doses of vitamin C can prevent the common cold. However, scientific evidence does not support this claim, and excessive intake of vitamin C can lead to side effects.",
+                reliable: false,
+                source: "Source: Health Myths Exposed"
+            },
+            {
+                text: "According to the World Health Organization, mental health is just as important as physical health. Seeking help from mental health professionals can lead to improved well-being and quality of life.",
+                reliable: true,
+                source: "Source: WHO"
+            },
+            {
+                text: "A viral post claims that a specific fruit can cure cancer. Such claims are not supported by scientific evidence and can lead patients to forgo effective treatments. Always consult with a medical professional for treatment advice.",
+                reliable: false,
+                source: "Source: Health Hoaxes Today"
+            },
+            {
+                text: "The CDC provides guidelines on preventing the spread of sexually transmitted infections (STIs). Using condoms and getting tested regularly are key strategies for maintaining sexual health.",
+                reliable: true,
+                source: "Source: CDC"
+            },
+            {
+                text: "Many believe that you can detoxify your body with special drinks. However, your body has its own detoxification systems, primarily the liver and kidneys, and such claims are often unsubstantiated.",
+                reliable: false,
+                source: "Source: Detox Myths Unveiled"
+            },
+            {
+                text: "The CDC recommends annual health screenings to detect potential health issues early. Regular check-ups can significantly improve treatment outcomes and overall health.",
+                reliable: true,
+                source: "Source: CDC"
+            }
+        ];
+
+        // Shuffle articles
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        shuffle(articles);
+
+        let currentArticleIndex = 0;
+
+        function showArticle() {
+            const article = articles[currentArticleIndex];
+            document.getElementById('article').innerText = `${article.text} (${article.source})`;
+        }
+
+        function checkAnswer(userAnswer) {
+            const article = articles[currentArticleIndex];
+            const isCorrect = (userAnswer === article.reliable);
+            document.getElementById('resultText').innerText = isCorrect 
+                ? "Correct! This article is indeed reliable." 
+                : "Incorrect! This article is actually unreliable.";
+            document.getElementById('popup').style.display = 'flex';
+        }
+
+        document.getElementById('reliableBtn').addEventListener('click', function() {
+            checkAnswer(true);
+        });
+
+        document.getElementById('unreliableBtn').addEventListener('click', function() {
+            checkAnswer(false);
+        });
+
+        document.getElementById('continueBtn').addEventListener('click', function() {
+            currentArticleIndex++;
+            if (currentArticleIndex < articles.length) {
+                showArticle();
+                document.getElementById('popup').style.display = 'none';
+            } else {
+                document.getElementById('resultText').innerText = "You've completed the game!";
+                document.getElementById('continueBtn').style.display = 'none';
+                document.getElementById('quitBtn').innerText = 'Finish';
+                document.getElementById('popup').style.display = 'flex';
+            }
+        });
+
+        document.getElementById('quitBtn').addEventListener('click', function() {
+            window.location.href = 'info.html'; // Redirect to info.html
+        });
+
+        // Start the game by showing the first article
+        showArticle();
+    </script>
+
+</html>

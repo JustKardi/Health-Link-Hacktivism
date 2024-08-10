@@ -29,8 +29,8 @@ app.get("/viruses", (req, res) => {
     res.render("viruses");
 });
 
-app.get("/isolation", (req, res) => {
-    res.render("isolation");
+app.get("/info", (req, res) => {
+    res.render("info");
 });
 
 app.get("/ai", (req, res) => {
