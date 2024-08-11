@@ -191,18 +191,22 @@
         </nav>
     </div>
         <h1 id = cardTitle>Contact</h1>
-    <form action="https://formspree.io/f/mkgwrjze" method="POST">
-        <label for="to">To:</label>
-        <input type="text" id="to" name="to" value="">
-        
-        <label for="subject">Subject:</label>
-        <input type="text" id="subject" name="subject">
-        
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" rows="5"></textarea>
-        
-        <button type="submit">Send Message</button>
-    </form>
+
+<form id="contact-form"   action="https://formspree.io/f/xovawkvj" method="POST">
+    <label for="to">To:</label>
+    <input type="text" id="to" name="to" required>
+    
+    <label for="subject">Subject:</label>
+    <input type="text" id="subject" name="subject" required>
+    
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" rows="5" required></textarea>
+    
+    <button type="submit">Send Message</button>
+</form>
+
+<div id="response-message"></div>
+
 
     <!-- CARDS CONTAINER -->
     <div class="container">
@@ -213,65 +217,69 @@
     </div>
 
 
-    <script>
-        const sampleData = [
-            {
-                pageTitle: "Disease Cases and Symptoms Overview",
-                iconClass: "fa-solid fa-virus",
-                color: "#eaeaea", // Example color
-                link: "/viruses"
-            },
-            
-            {
-                pageTitle: "Health Misinformation Awareness",
-                iconClass: "fa-solid fa-book-medical",
-                color: "#eaeaea",
-                link: "/info"
-            },
-    
-            {
-                pageTitle: "AI Virus Diagnostic Assistant",
-                iconClass: "fa-solid fa-robot",
-                color: "#eaeaea", // Example color
-                link: "/ai"
-            },
-            {
-                pageTitle: "Hospital Locations",
-                iconClass: "fa-solid fa-hospital",
-                color: "#eaeaea", // Example color
-                link: "/maps"
-            }
-        ];
+<script>
+    // Sample data for the cards
+    const sampleData = [
+        {
+            pageTitle: "Disease Cases and Symptoms Overview",
+            iconClass: "fa-solid fa-virus",
+            color: "#eaeaea", // Example color
+            link: "/viruses"
+        },
+        {
+            pageTitle: "Health Misinformation Awareness",
+            iconClass: "fa-solid fa-book-medical",
+            color: "#eaeaea",
+            link: "/info"
+        },
+        {
+            pageTitle: "AI Virus Diagnostic Assistant",
+            iconClass: "fa-solid fa-robot",
+            color: "#eaeaea", // Example color
+            link: "/ai"
+        },
+        {
+            pageTitle: "Hospital Locations",
+            iconClass: "fa-solid fa-hospital",
+            color: "#eaeaea", // Example color
+            link: "/maps"
+        }
+    ];
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const cardList = document.getElementById("card-list");
+    // Function to create card elements
+    function createCardElement(data) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+            <a href="${data.link}">
+                <i class="${data.iconClass}" style="font-size: 40px; margin-bottom: 20px; color: ${data.color};"></i>
+                <div class="title">
+                    <p>${data.pageTitle}</p>
+                </div>
+            </a>
+        `;
+        return card;
+    }
 
-            if (!cardList) {
-                console.error("Element not found");
-                return;
-            }
+    // Add cards to the page when DOM is fully loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        const cardList = document.getElementById("card-list");
 
-            sampleData.forEach(data => {
-                const card = createCardElement(data);
-                cardList.appendChild(card);
-            });
-        });
-
-        function createCardElement(data) {
-            const card = document.createElement("div");
-            card.className = "card";
-            card.innerHTML = `
-                <a href="${data.link}">
-                    <i class="${data.iconClass}" style="font-size: 40px; margin-bottom: 20px; color: ${data.color};"></i>
-                    <div class="title">
-                        <p>${data.pageTitle}</p>
-                    </div>
-                </a>
-            `;
-            return card;
+        if (!cardList) {
+            console.error("Element not found");
+            return;
         }
 
-        const form = document.querySelector('form');
+        sampleData.forEach(data => {
+            const card = createCardElement(data);
+            cardList.appendChild(card);
+        });
+    });
+
+    // Contact form submission handler
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.getElementById('contact-form');
+        const responseMessage = document.getElementById('response-message');
 
         form.addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent default form submission
@@ -295,17 +303,24 @@
             })
             .then(response => {
                 if (response.ok) {
-                    // Successful submission
-                    window.location.href = 'success.html'; // Redirect to success page
+                    // Show success message
+                    responseMessage.textContent = 'Email sent successfully!';
+                    responseMessage.style.color = 'green';
+                    // Clear the form
+                    form.reset();
                 } else {
                     throw new Error('Form submission failed');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Handle error if needed
+                // Show error message
+                responseMessage.textContent = 'Failed to send email. Please try again.';
+                responseMessage.style.color = 'red';
             });
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>
