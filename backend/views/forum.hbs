@@ -303,60 +303,91 @@
     </div>
 
 <script>
-        const sampleData = [
-            {
-                pageTitle: "Disease Cases and Symptoms Overview",
-                iconClass: "fa-solid fa-virus",
-                color: "#eaeaea", // Example color
-                link: "/viruses"
-            },
-            {
-                pageTitle: "Health Misinformation Awareness",
-                iconClass: "fa-solid fa-book-medical",
-                color: "#eaeaea",
-                link: "/info"
-            },
-            {
-                pageTitle: "AI Virus Diagnostic Assistant",
-                iconClass: "fa-solid fa-robot",
-                color: "#eaeaea", // Example color
-                link: "/ai"
-            },
-            {
-                pageTitle: "Hospital Locations",
-                iconClass: "fa-solid fa-hospital",
-                color: "#eaeaea", // Example color
-                link: "/maps"
-            }
-        ];
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const cardList = document.getElementById("card-list");
-
-            if (!cardList) {
-                console.error("Element not found");
-                return;
-            }
-
-            sampleData.forEach(data => {
-                const card = createCardElement(data);
-                cardList.appendChild(card);
-            });
-        });
-
-        function createCardElement(data) {
-            const card = document.createElement("div");
-            card.className = "card";
-            card.innerHTML = `
-                <a href="${data.link}">
-                    <i class="${data.iconClass}" style="font-size: 40px; margin-bottom: 20px; color: ${data.color};"></i>
-                    <div class="title">
-                        <p>${data.pageTitle}</p>
-                    </div>
-                </a>
-            `;
-            return card;
+    const sampleData = [
+        {
+            pageTitle: "Disease Cases and Symptoms Overview",
+            iconClass: "fa-solid fa-virus",
+            color: "#eaeaea", // Example color
+            link: "/viruses"
+        },
+        {
+            pageTitle: "Health Misinformation Awareness",
+            iconClass: "fa-solid fa-book-medical",
+            color: "#eaeaea",
+            link: "/info"
+        },
+        {
+            pageTitle: "AI Virus Diagnostic Assistant",
+            iconClass: "fa-solid fa-robot",
+            color: "#eaeaea", // Example color
+            link: "/ai"
+        },
+        {
+            pageTitle: "Hospital Locations",
+            iconClass: "fa-solid fa-hospital",
+            color: "#eaeaea", // Example color
+            link: "/maps"
         }
+    ];
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const cardList = document.getElementById("card-list");
+
+        if (!cardList) {
+            console.error("Element not found");
+            return;
+        }
+
+        sampleData.forEach(data => {
+            const card = createCardElement(data);
+            cardList.appendChild(card);
+        });
+    });
+
+    function createCardElement(data) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+            <a href="${data.link}">
+                <i class="${data.iconClass}" style="font-size: 40px; margin-bottom: 20px; color: ${data.color};"></i>
+                <div class="title">
+                    <p>${data.pageTitle}</p>
+                </div>
+            </a>
+        `;
+        return card;
+    }
+
+    // Handle form submission
+    document.getElementById("postForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the form from submitting the traditional way
+
+        const userName = document.getElementById("userName").value;
+        const userMessage = document.getElementById("userMessage").value;
+
+        if (userName && userMessage) {
+            const post = createPostElement(userName, userMessage);
+            const postsContainer = document.getElementById("postsContainer");
+            postsContainer.appendChild(post);
+
+            // Clear the form inputs
+            document.getElementById("userName").value = '';
+            document.getElementById("userMessage").value = '';
+            document.getElementById("subscribeCheckbox").checked = false;
+        } else {
+            alert("Please fill in all fields.");
+        }
+    });
+
+    function createPostElement(userName, userMessage) {
+        const post = document.createElement("div");
+        post.className = "post";
+        post.innerHTML = `
+            <h3>${userName}</h3>
+            <p>${userMessage}</p>
+        `;
+        return post;
+    }
 </script>
 
 
