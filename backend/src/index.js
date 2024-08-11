@@ -4,11 +4,23 @@ const express = require ("express")
 const app = express()
 const path = require ("path")
 const collection = require("./mongodb")
+const dotenv = require('dotenv');
+dotenv.config();
 
 app.use(express.json())
 app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "hbs");
 app.use(express.urlencoded({extended:false}))
+
+// Example Express routes in your backend (Node.js/Express)
+app.get('/api/key', (req, res) => {
+    res.json({ apiKey: process.env.GOOGLE_MAPS_API_KEY });
+});
+
+app.get('/api/mapid', (req, res) => {
+    res.json({ mapId: process.env.GOOGLE_MAPS_MAP_ID });
+});
+
 
 // GET ROUTE
 app.get("/", (req,res)=>{
