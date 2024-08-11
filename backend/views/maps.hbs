@@ -268,14 +268,15 @@
         });
 
         const hospitals = [
-            { name: "Hospital A", location: { lat: defaultLocation.lat + 0.015, lng: defaultLocation.lng - 0.010 }, icon: "http://maps.google.com/mapfiles/ms/icons/hospital.png" },
-            { name: "Hospital B", location: { lat: defaultLocation.lat - 0.020, lng: defaultLocation.lng + 0.025 }, icon: "http://maps.google.com/mapfiles/ms/icons/clinic.png" },
-            { name: "Hospital C", location: { lat: defaultLocation.lat + 0.030, lng: defaultLocation.lng - 0.020 }, icon: "http://maps.google.com/mapfiles/ms/icons/hospital.png" },
-            { name: "Hospital D", location: { lat: defaultLocation.lat - 0.025, lng: defaultLocation.lng + 0.030 }, icon: "http://maps.google.com/mapfiles/ms/icons/clinic.png" },
-            { name: "Hospital E", location: { lat: defaultLocation.lat + 0.040, lng: defaultLocation.lng - 0.015 }, icon: "http://maps.google.com/mapfiles/ms/icons/hospital.png" },
-            { name: "Hospital F", location: { lat: defaultLocation.lat - 0.035, lng: defaultLocation.lng + 0.045 }, icon: "http://maps.google.com/mapfiles/ms/icons/clinic.png" },
-            { name: "Hospital G", location: { lat: defaultLocation.lat + 0.025, lng: defaultLocation.lng - 0.035 }, icon: "http://maps.google.com/mapfiles/ms/icons/hospital.png" }
+            { name: "Sunrise Medical Center", location: { lat: defaultLocation.lat + 0.015, lng: defaultLocation.lng - 0.010 }, icon: "http://maps.google.com/mapfiles/ms/icons/hospital.png" },
+            { name: "Green Valley Hospital", location: { lat: defaultLocation.lat - 0.020, lng: defaultLocation.lng + 0.025 }, icon: "http://maps.google.com/mapfiles/ms/icons/clinic.png" },
+            { name: "Oakwood Health Clinic", location: { lat: defaultLocation.lat + 0.030, lng: defaultLocation.lng - 0.020 }, icon: "http://maps.google.com/mapfiles/ms/icons/hospital.png" },
+            { name: "Maple Leaf Medical Center", location: { lat: defaultLocation.lat - 0.025, lng: defaultLocation.lng + 0.030 }, icon: "http://maps.google.com/mapfiles/ms/icons/clinic.png" },
+            { name: "Pine Ridge Hospital", location: { lat: defaultLocation.lat + 0.040, lng: defaultLocation.lng - 0.015 }, icon: "http://maps.google.com/mapfiles/ms/icons/hospital.png" },
+            { name: "Riverdale Clinic", location: { lat: defaultLocation.lat - 0.035, lng: defaultLocation.lng + 0.045 }, icon: "http://maps.google.com/mapfiles/ms/icons/clinic.png" },
+            { name: "Cedarwood Hospital", location: { lat: defaultLocation.lat + 0.025, lng: defaultLocation.lng - 0.035 }, icon: "http://maps.google.com/mapfiles/ms/icons/hospital.png" }
         ];
+
 
         hospitals.forEach(hospital => {
             new google.maps.Marker({
