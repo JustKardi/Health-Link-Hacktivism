@@ -92,7 +92,7 @@
         }
 
         h1 {
-            color: #cccccc;
+            color: #eaeaea;
         }
 
         nav ul {
@@ -276,6 +276,32 @@
             { name: "Riverdale Clinic", location: { lat: defaultLocation.lat - 0.035, lng: defaultLocation.lng + 0.045 }, icon: "http://maps.google.com/mapfiles/ms/icons/clinic.png" },
             { name: "Cedarwood Hospital", location: { lat: defaultLocation.lat + 0.025, lng: defaultLocation.lng - 0.035 }, icon: "http://maps.google.com/mapfiles/ms/icons/hospital.png" }
         ];
+        const infoWindow = new google.maps.InfoWindow(); // Create a new InfoWindow instance
+
+        hospitals.forEach(hospital => {
+            const marker = new google.maps.Marker({
+                position: hospital.location,
+                map: map,
+                title: hospital.name,
+                icon: hospital.icon
+            });
+
+            // Add click event listener to each marker
+            marker.addListener('click', () => {
+                const distance = google.maps.geometry.spherical.computeDistanceBetween(
+                    new google.maps.LatLng(defaultLocation.lat, defaultLocation.lng),
+                    new google.maps.LatLng(hospital.location.lat, hospital.location.lng)
+                ) / 1000; // Convert meters to kilometers
+
+                infoWindow.setContent(`
+                    <div>
+                        <strong>${hospital.name}</strong><br>
+                        Distance from you: ${distance.toFixed(2)} km
+                    </div>
+                `);
+                infoWindow.open(map, marker);
+            });
+        });
 
 
         hospitals.forEach(hospital => {
