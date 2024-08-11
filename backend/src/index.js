@@ -1,3 +1,5 @@
+
+// EXPRESS SCRIPT
 const express = require ("express")
 const app = express()
 const path = require ("path")
@@ -92,8 +94,6 @@ app.post("/login", async (req, res) => {
         res.status(500).send("Server Error");
     }
 });
-
-
 
 // change number in accordance with your local host
 app.listen(5509, () => {

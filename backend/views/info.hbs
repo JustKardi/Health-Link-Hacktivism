@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotting Misinformation in Health Articles</title>
+    <title>Spotting Misinformation in Health Articles</title>    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
     <style>
         /* CARD STYLING */
@@ -26,7 +27,7 @@
             align-items: center; 
             overflow: hidden; 
             transition: transform 0.3s ease; 
-            background: #5145a4; 
+            background: #017BFE; 
 
         }
 
@@ -49,12 +50,11 @@
         }
 
         #cardTitle {
-            color: #5145a4; /* Title color */
+            color: #017BFE; /* Title color */
             text-align: center; /* Center-align the text */
             margin-top: 100px; /* Margin for spacing */
         }
 
-        
         /* BODY STYLING */
         body {
             background-color: #eaeaea;
@@ -71,7 +71,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 20px;
-            background-color: #6A5ACD;
+            background-color: #017BFE;
             position: fixed;
             top: 10px;
             left: 50%;
@@ -151,12 +151,16 @@
             color: #333;
         }
 
+        /* INFORMATION STYLING */
         header {
-            background: #007BFF;
+            background: #017BFE;
             color: white;
             padding: 20px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 100px;
+            border-radius: 12px;
+
         }
 
         h1 {
@@ -170,15 +174,31 @@
         }
 
         h2 {
-            color: #007BFF;
+            color: #017BFE;
             margin-bottom: 10px;
             border-bottom: 2px solid #007BFF;
             padding-bottom: 5px;
         }
 
+        /* Align bullet points to the left */
         .tips ul {
-            margin-left: 20px;
-            margin-bottom: 20px;
+            list-style-position: inside; /* Ensures bullets are closer to the text */
+            padding-left: 0; /* Removes default padding */
+            margin-left: 0; /* Removes default margin */
+        }
+
+        .tips ul li {
+            margin-left: 20px; /* Adds spacing if needed between bullet and text */
+        }
+
+        .importance ul {
+            list-style-position: inside; /* Ensures bullets are closer to the text */
+            padding-left: 0; /* Removes default padding */
+            margin-left: 0; /* Removes default margin */
+        }
+
+        .importance ul li {
+            margin-left: 20px; /* Adds spacing if needed between bullet and text */
         }
 
         .chart table {
@@ -269,7 +289,7 @@
 </head>
 
 <body>
-    <!-- HEADER -->
+    <!-- HEADER SECTION -->
     <div class="header">
         <h1>Health Link <i class="fa-solid fa-link"></i> </h1>
         <nav>
@@ -282,17 +302,21 @@
         </nav>
     </div>
 
-    <header>
-        <h1>Spotting Misinformation in Health Articles</h1>
-        <p>Learn how to identify misinformation and understand its importance.</p>
-        <a href="#tips" class="btn">Get Started</a>
-    </header>
+    <!-- INFORMATION SECTION -->
+
+        <header>
+            <h1>Spotting Misinformation in Health Articles</h1>
+            <p>Learn how to identify misinformation and understand its importance.</p>
+            <a href="#tips" class="btn">Get Started</a>
+        </header>
+
+
 
     <main>
         <section class="importance">
             <h2>Why It’s Important to Avoid Misinformation</h2>
             <p>Misinformation can lead to harmful health decisions, confusion, and panic. Trustworthy information is vital for making informed health choices. Here's why it matters:</p>
-            <ul>
+            <ul><br>
                 <li><strong>Health Risks:</strong> Acting on false information can lead to dangerous behaviors.</li>
                 <li><strong>Trust Issues:</strong> Misinformation erodes trust in legitimate health sources.</li>
                 <li><strong>Public Health Impact:</strong> Widespread misinformation can hinder efforts to control diseases.</li>
@@ -300,6 +324,7 @@
         </section>
 
         <section class="tips" id="tips">
+            <br><br>
             <h2>How to Spot Misinformation</h2>
             <p>Look for these signs when reading health articles:</p>
             <ul>
@@ -311,6 +336,7 @@
         </section>
 
         <section class="chart">
+            <br><br>
             <h2>Do's and Don'ts</h2>
             <table>
                 <thead>
@@ -340,7 +366,7 @@
             </table>
         </section>
 
-        <div class="game-container">
+        <div class="game-container"><br><br>
             <h2>Test Your Skills</h2>
             <div class="article" id="article"></div>
             <button class="btn" id="reliableBtn">Reliable</button>
@@ -355,12 +381,6 @@
             </div>
         </div>
     </main>
-
-    <footer>
-        <p>&copy; 2024 Health Awareness Initiative</p>
-    </footer>
-
-
 </body>
 
 <!-- CARDS CONTAINER -->
@@ -382,9 +402,9 @@
                 link: "/viruses"
             },
             {
-                pageTitle: "Virus Research Assistant",
-                iconClass: "fa-solid fa-microscope",
-                color: "#eaeaea", // Example color
+                pageTitle: "Health Misinformation Awareness",
+                iconClass: "fa-solid fa-book-medical",
+                color: "#eaeaea",
                 link: "/info"
             },
             {
